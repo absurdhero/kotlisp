@@ -1,0 +1,14 @@
+package net.raboof.kotlisp
+
+import kotlin.collections.*
+
+
+data class QExpression(val exprs: List<Expr>) : Expr {
+    override fun print(): String {
+        return "{${exprs.map{ it.print() }.joinToString(" ")}}"
+    }
+
+    override fun evaluate(): Expr {
+        return this
+    }
+}

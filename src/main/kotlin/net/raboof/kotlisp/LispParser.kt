@@ -21,16 +21,20 @@ public class LispParser() : CharParsers<String>() {
         return expr(input)?.value?.evaluate();
     }
 
+    val number: Parser<String, Expr> = whitespace and charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) as Expr }
+
+    val symbol = whitespace and concat(char(Regex("""[^(){}\d\s]""")), repeat(char(Regex("""[^(){}\s]""")))).string().map { Symbol(it) as Expr }
+
     val sexprRef: Reference<String, Expr> = Reference()
     val sexpr = sexprRef.get()
 
-    val number: Parser<String, Expr> = whitespace and charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) as Expr }
+    val qexprRef: Reference<String, Expr> = Reference()
+    val qexpr = qexprRef.get()
 
-    val symbol = whitespace and concat(char(Regex("""[^()\d\s]""")), repeat(char(Regex("""[^()\s]""")))).string().map { Symbol(it) as Expr }
-
-    val expr = number or symbol or sexpr
+    val expr = number or symbol or sexpr or qexpr
 
     init {
         sexprRef.set(repeat(expr).between(wsChar('('), wsChar(')')).map { SExpression(it) })
+        qexprRef.set(repeat(expr).between(wsChar('{'), wsChar('}')).map { QExpression(it) })
     }
 }
