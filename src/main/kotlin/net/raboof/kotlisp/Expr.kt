@@ -1,6 +1,6 @@
 package net.raboof.kotlisp
 
 interface Expr {
-    fun evaluate(): Expr
+    fun evaluate(environment: Environment): Expr
     fun print(): String
 }

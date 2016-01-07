@@ -1,7 +1,9 @@
 package net.raboof.kotlisp
 
-import kotlin.collections.*
-import kotlin.text.toLong
+import net.raboof.kotlisp.builtins.Builtin
+import kotlin.collections.first
+import kotlin.collections.joinToString
+import kotlin.collections.map
 
 
 data class SExpression(val exprs: List<Expr>) : Expr {
@@ -9,14 +11,14 @@ data class SExpression(val exprs: List<Expr>) : Expr {
         return "(${exprs.map{ it.print() }.joinToString(" ")})"
     }
 
-    override fun evaluate(): Expr {
+    override fun evaluate(environment: Environment): Expr {
         if (exprs.size == 0) {
             return this;
         }
 
         // first evaluate items from left to right
-        val head = exprs.first().evaluate()
-        val rest = exprs.subList(1, exprs.size).map { it.evaluate() }
+        val head = exprs.first().evaluate(environment)
+        val rest = exprs.subList(1, exprs.size).map { it.evaluate(environment) }
 
         return when (head) {
             is Number -> {
@@ -26,14 +28,11 @@ data class SExpression(val exprs: List<Expr>) : Expr {
                 head
             }
             is Symbol -> {
-                when(head.value) {
-                    "first" -> builtinFirst(rest)
-                    "rest" -> builtinRest(rest)
-                    "eval" -> builtinEval(rest)
-                    "list" -> builtinList(rest)
-                    "join" -> builtinJoin(rest)
-                    "+", "-", "*", "/" -> builtinOp(head, rest)
-                    else -> throw IllegalArgumentException("unknown symbol")
+                val value = environment[head.value]
+                when(value) {
+                    is Builtin -> value.evaluate(environment, rest)
+                    null -> throw IllegalArgumentException("unknown symbol $head")
+                    else -> throw IllegalArgumentException("cannot evaluate ${value.print()} as a function")
                 }
             }
             is SExpression -> {
@@ -43,59 +42,4 @@ data class SExpression(val exprs: List<Expr>) : Expr {
         }
     }
 
-    private fun builtinFirst(rest: List<Expr>) : Expr {
-        val first = rest.first()
-        when(first) {
-            is QExpression -> return first.exprs.first()
-            else -> throw IllegalArgumentException("expected q-expression but got $first")
-        }
-    }
-
-    private fun builtinRest(rest: List<Expr>) = QExpression(rest.subList(1, exprs.size))
-
-    private fun builtinEval(rest: List<Expr>): Expr {
-        if (rest.size != 1) throw IllegalArgumentException("expected 1 argument but got ${rest.size}")
-        val first = rest.first()
-        when(first) {
-            is QExpression -> return SExpression(first.exprs).evaluate()
-            else -> throw IllegalArgumentException("expected q-expression but got $first")
-        }
-    }
-
-    private fun builtinList(rest: List<Expr>): Expr = QExpression(rest)
-
-    private fun builtinJoin(rest: List<Expr>): Expr {
-        return QExpression(rest.flatMap {
-            when (it) {
-                is QExpression -> it.exprs
-                else -> throw IllegalArgumentException("expected q-expression but got $it")
-            }
-        })
-    }
-
-    private fun builtinOp(head: Symbol, rest: List<Expr>): Number {
-        return Number(when (head.value) {
-            "+" -> numberTerms(head, rest).fold (0L, { acc, next -> acc + next })
-            "-" -> numberTerms(head, rest).reduce { acc, next -> acc - next }
-            "*" -> numberTerms(head, rest).fold (1L, { acc, next -> acc * next })
-            "/" -> numberTerms(head, rest).reduce { acc, next -> acc / next }
-            else -> throw IllegalArgumentException("unknown operator ${head.print()}")
-        }.toString())
-    }
-
-    private fun numberTerms(head: Symbol, rest: List<Expr>): List<Long> {
-        return rest.map {
-            when (it) {
-                is Number -> it.evaluate().value.toLong()
-                is SExpression -> {
-                    val value = it.evaluate()
-                    when (value) {
-                        is Number -> value.value.toLong()
-                        else -> throw IllegalArgumentException("cannot evaluate argument ${it.print()} of ${head.print()}")
-                    }
-                }
-                else -> throw IllegalArgumentException("cannot evaluate argument ${it.print()} of ${head.print()}")
-            }
-        }
-    }
 }

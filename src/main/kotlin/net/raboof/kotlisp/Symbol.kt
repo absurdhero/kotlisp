@@ -5,7 +5,7 @@ data class Symbol(val value: String) : Expr {
         return value
     }
 
-    override fun evaluate(): Symbol {
+    override fun evaluate(environment: Environment): Symbol {
         return this
     }
 }
