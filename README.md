@@ -10,6 +10,6 @@ compile and run this project.
 
 To run the REPL from the command line run
 
-    mvn exec:java -Dexec.mainClass="net.raboof.kotlisp.Main"`
+    mvn exec:java -Dexec.mainClass="net.raboof.kotlisp.MainKt"`
 
-Or run the Main class in your IDE.
+Or run Main.kt in your IDE.
