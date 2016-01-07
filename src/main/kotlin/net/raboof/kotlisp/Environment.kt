@@ -7,8 +7,8 @@ import kotlin.collections.set
 open class Environment {
     private val map : MutableMap<String, Expr> = HashMap()
 
-    public operator fun get(value: String) : Expr? {
-        return map[value]
+    public operator fun get(value: String) : Expr {
+        return map[value] ?: throw IllegalArgumentException("unknown symbol $value")
     }
 
     public operator fun contains(value: String) : Boolean {

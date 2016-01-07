@@ -21,19 +21,14 @@ data class SExpression(val exprs: List<Expr>) : Expr {
         val rest = exprs.subList(1, exprs.size).map { it.evaluate(environment) }
 
         return when (head) {
-            is Number -> {
+            is Builtin -> {
+                head(environment, rest)
+            }
+            is Number, is Symbol -> {
                 if (rest.size > 0) {
                     throw IllegalArgumentException("cannot evaluate ${head.print()} as a function")
                 }
                 head
-            }
-            is Symbol -> {
-                val value = environment[head.value]
-                when(value) {
-                    is Builtin -> value.evaluate(environment, rest)
-                    null -> throw IllegalArgumentException("unknown symbol $head")
-                    else -> throw IllegalArgumentException("cannot evaluate ${value.print()} as a function")
-                }
             }
             is SExpression -> {
                 throw IllegalArgumentException("cannot evaluate s-expression ${head.print()} as a function")

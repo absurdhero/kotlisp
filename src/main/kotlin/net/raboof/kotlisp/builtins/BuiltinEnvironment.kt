@@ -13,6 +13,7 @@ class BuiltinEnvironment : Environment() {
         register(minus)
         register(multiply)
         register(divide)
+        register(def)
     }
 
     fun register(builtin: Builtin) {

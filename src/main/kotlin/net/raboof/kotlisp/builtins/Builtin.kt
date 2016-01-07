@@ -8,11 +8,11 @@ class Builtin(val name: String, val f: (Environment, List<Expr>) -> Expr) : Expr
         throw UnsupportedOperationException()
     }
 
-    fun evaluate(environment: Environment, rest: List<Expr>): Expr {
+    operator fun invoke(environment: Environment, rest: List<Expr>): Expr {
         return f(environment, rest)
     }
 
     override fun print(): String {
-        return "#$name#"
+        return "Builtin<$name>"
     }
 }

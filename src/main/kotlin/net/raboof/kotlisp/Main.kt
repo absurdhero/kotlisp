@@ -1,6 +1,7 @@
 package net.raboof.kotlisp
 
 import jline.UnsupportedTerminal
+import net.raboof.kotlisp.builtins.BuiltinEnvironment
 import java.io.PrintWriter
 import kotlin.text.toLowerCase
 
@@ -16,6 +17,8 @@ fun main(args : Array<String>) {
 
     val parser = LispParser()
 
+    val env = BuiltinEnvironment()
+
     while(true) {
         val line = console.readLine() ?: break
 
@@ -24,7 +27,7 @@ fun main(args : Array<String>) {
         }
 
         try {
-            out.println(parser.evaluate(line)?.print() ?: "error: could not parse")
+            out.println(parser.evaluate(env, line)?.print() ?: "error: could not parse")
         } catch (e: RuntimeException) {
             out.println("error: " + e.message)
         }

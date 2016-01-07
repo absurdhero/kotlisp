@@ -17,8 +17,8 @@ public class LispParser() : CharParsers<String>() {
         }
 
     /** evaluate the input or return null */
-    fun evaluate(input: String): Expr? {
-        return expr(input)?.value?.evaluate(net.raboof.kotlisp.builtins.BuiltinEnvironment());
+    fun evaluate(env: Environment, input: String): Expr? {
+        return expr(input)?.value?.evaluate(env);
     }
 
     val number: Parser<String, Expr> = whitespace and charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) as Expr }
