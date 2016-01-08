@@ -32,3 +32,7 @@ val def = Builtin("def", {env, rest ->
         else -> throw IllegalArgumentException("expected first argument to be a q-expression but got ${symbols.print()}")
     }
 })
+
+val env = Builtin("env", {env, rest ->
+    QExpression(env.symbols().sorted().map { Symbol(it) })
+})

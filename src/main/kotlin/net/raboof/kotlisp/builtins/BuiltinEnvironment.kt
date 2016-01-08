@@ -14,6 +14,7 @@ class BuiltinEnvironment : Environment() {
         register(multiply)
         register(divide)
         register(def)
+        register(env)
     }
 
     fun register(builtin: Builtin) {

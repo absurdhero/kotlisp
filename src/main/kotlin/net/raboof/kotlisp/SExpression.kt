@@ -22,7 +22,7 @@ data class SExpression(val exprs: List<Expr>) : Expr {
 
         return when (head) {
             is Builtin -> {
-                head(environment, rest)
+                head.invoke(environment, rest)
             }
             is Number, is Symbol -> {
                 if (rest.size > 0) {

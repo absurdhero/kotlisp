@@ -19,4 +19,5 @@ open class Environment {
         map[key] = value
     }
 
+    public fun symbols() : List<String> = map.keys.toList()
 }
