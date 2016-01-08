@@ -1,7 +1,5 @@
 package net.raboof.kotlisp
 
-import net.raboof.kotlisp.Environment
-import net.raboof.kotlisp.LispParser
 import net.raboof.kotlisp.builtins.BuiltinEnvironment
 
 abstract class EvalHarness {

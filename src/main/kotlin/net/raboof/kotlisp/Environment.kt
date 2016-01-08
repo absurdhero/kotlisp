@@ -9,11 +9,10 @@ open class Environment(val parent: Environment?) {
 
     public operator fun get(value: String) : Expr {
         if (parent != null) {
-            try {
-                return parent[value]
-            } catch(_: IllegalArgumentException) {}
+            return map[value] ?: parent[value]
+        } else {
+            return map[value] ?: throw IllegalArgumentException("unknown symbol $value")
         }
-        return map[value] ?: throw IllegalArgumentException("unknown symbol $value")
     }
 
     public operator fun contains(value: String) : Boolean {

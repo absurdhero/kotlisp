@@ -3,7 +3,7 @@ package net.raboof.kotlisp
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class ListBuildinTest : EvalHarness() {
+class ListBuiltinTest : EvalHarness() {
     @Test fun evalListOfSexprs() {
         assertEquals("3", eval("(eval (first {(+ 1 2) (+ 10 10)}))"))
     }
