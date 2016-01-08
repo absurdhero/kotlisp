@@ -11,6 +11,10 @@ data class SExpression(val exprs: List<Expr>) : Expr {
         return "(${exprs.map{ it.print() }.joinToString(" ")})"
     }
 
+    override fun toString() : String {
+        return print();
+    }
+
     override fun evaluate(environment: Environment): Expr {
         if (exprs.size == 0) {
             return this;
@@ -22,6 +26,9 @@ data class SExpression(val exprs: List<Expr>) : Expr {
 
         return when (head) {
             is Builtin -> {
+                head.invoke(environment, rest)
+            }
+            is Lambda -> {
                 head.invoke(environment, rest)
             }
             is Number, is Symbol -> {

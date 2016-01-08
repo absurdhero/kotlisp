@@ -1,5 +1,6 @@
 package net.raboof.kotlisp.builtins
 
+import net.raboof.kotlisp.Lambda
 import net.raboof.kotlisp.QExpression
 import net.raboof.kotlisp.SExpression
 import net.raboof.kotlisp.Symbol
@@ -31,6 +32,11 @@ val def = Builtin("def", {env, rest ->
         }
         else -> throw IllegalArgumentException("expected first argument to be a q-expression but got ${symbols.print()}")
     }
+})
+
+val lambda = Builtin("\\", {env, rest ->
+    val args = rest.component1() as QExpression
+    Lambda(args, rest.component2())
 })
 
 val env = Builtin("env", {env, rest ->

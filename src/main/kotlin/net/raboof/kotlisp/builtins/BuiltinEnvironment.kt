@@ -2,7 +2,7 @@ package net.raboof.kotlisp.builtins
 
 import net.raboof.kotlisp.Environment
 
-class BuiltinEnvironment : Environment() {
+class BuiltinEnvironment : Environment(null) {
     init {
         register(first)
         register(rest)
@@ -15,6 +15,7 @@ class BuiltinEnvironment : Environment() {
         register(divide)
         register(def)
         register(env)
+        register(lambda)
     }
 
     fun register(builtin: Builtin) {

@@ -11,4 +11,8 @@ data class QExpression(val exprs: List<Expr>) : Expr {
     override fun evaluate(environment: Environment): Expr {
         return this
     }
+
+    override fun toString() : String {
+        return print();
+    }
 }

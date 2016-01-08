@@ -4,10 +4,15 @@ import java.util.*
 import kotlin.collections.set
 
 
-open class Environment {
+open class Environment(val parent: Environment?) {
     private val map : MutableMap<String, Expr> = HashMap()
 
     public operator fun get(value: String) : Expr {
+        if (parent != null) {
+            try {
+                return parent[value]
+            } catch(_: IllegalArgumentException) {}
+        }
         return map[value] ?: throw IllegalArgumentException("unknown symbol $value")
     }
 
