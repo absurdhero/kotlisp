@@ -17,7 +17,7 @@ public class LispParser() : CharParsers<String>() {
         }
 
     /** evaluate the input or return null */
-    fun evaluate(env: Environment, input: String): Expr? {
+    fun evaluate(env: ChainedEnvironment, input: String): Expr? {
         return expr(input)?.value?.evaluate(env);
     }
 

@@ -6,7 +6,7 @@ data class Number(val value: String) : Expr {
         return value
     }
 
-    override fun evaluate(environment: Environment): Number {
+    override fun evaluate(environment: ChainedEnvironment): Number {
         return this
     }
 }

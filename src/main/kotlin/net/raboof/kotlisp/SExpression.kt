@@ -15,7 +15,7 @@ data class SExpression(val exprs: List<Expr>) : Expr {
         return print();
     }
 
-    override fun evaluate(environment: Environment): Expr {
+    override fun evaluate(environment: ChainedEnvironment): Expr {
         if (exprs.size == 0) {
             return this;
         }

@@ -3,7 +3,7 @@ package net.raboof.kotlisp
 class Lambda : Expr {
     val args: List<String>
     val body: SExpression
-    val env: Environment
+    val env: ChainedEnvironment
 
     constructor(arguments: QExpression, rest: Expr) {
         args = arguments.exprs.map {
@@ -17,10 +17,10 @@ class Lambda : Expr {
             is QExpression -> body = SExpression(rest.exprs)
             else -> throw IllegalArgumentException("function body must be a q-expression")
         }
-        env = Environment(null)
+        env = ChainedEnvironment()
     }
 
-    constructor(args: List<String>, body: SExpression, env: Environment) {
+    constructor(args: List<String>, body: SExpression, env: ChainedEnvironment) {
         this.args = args
         this.body = body
         this.env = env
@@ -30,11 +30,11 @@ class Lambda : Expr {
         return "(\\ $args $body)"
     }
 
-    override fun evaluate(environment: Environment): Expr {
+    override fun evaluate(environment: ChainedEnvironment): Expr {
         return this
     }
 
-    operator fun invoke(environment: Environment, rest: List<Expr>): Expr {
+    operator fun invoke(environment: ChainedEnvironment, rest: List<Expr>): Expr {
         if (args.size < rest.size) {
             throw IllegalArgumentException("arity mismatch");
         }

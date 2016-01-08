@@ -1,8 +1,8 @@
 package net.raboof.kotlisp.builtins
 
-import net.raboof.kotlisp.Environment
+import net.raboof.kotlisp.ChainedEnvironment
 
-class BuiltinEnvironment : Environment(null) {
+class BuiltinEnvironment : ChainedEnvironment() {
     init {
         register(first)
         register(rest)

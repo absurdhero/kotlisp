@@ -1,29 +1,20 @@
 package net.raboof.kotlisp
 
-import java.util.*
-import kotlin.collections.set
+interface Environment {
+    public operator fun get(value: String): Expr
+    public operator fun contains(value: String): Boolean
+    public operator fun set(key: String, value: Expr)
+    public fun symbols(): List<String>
 
-open class Environment(val parent: Environment?, private val map : MutableMap<String, Expr> = HashMap()) {
+    class Empty : Environment {
+        override fun contains(value: String): Boolean = false
 
-    public operator fun get(value: String) : Expr {
-        if (parent != null) {
-            return map[value] ?: parent[value]
-        } else {
-            return map[value] ?: throw IllegalArgumentException("unknown symbol $value")
-        }
-    }
+        override fun symbols(): List<String> = emptyList()
 
-    public operator fun contains(value: String) : Boolean {
-        return map.containsKey(value)
-    }
+        public override operator fun get(value: String) =
+                throw IllegalArgumentException("unknown symbol $value")
 
-    public operator fun set(key: String, value: Expr) {
-        map[key] = value
-    }
-
-    public fun symbols() : List<String> = map.keys.toList()
-
-    fun childOf(parent: Environment): Environment {
-        return Environment(parent, HashMap(map))
+        public override operator fun set(key: String, value: Expr) =
+                throw UnsupportedOperationException("cannot set variable in empty environment")
     }
 }
