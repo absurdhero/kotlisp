@@ -11,7 +11,7 @@ import kotlin.collections.zip
 
 val def = Builtin("def", {env, rest ->
     val symbols = rest.first().evaluate(env)
-    val values = rest(env, rest) as QExpression
+    val values = QExpression(rest.drop(1))
 
     when(symbols) {
         is QExpression -> {

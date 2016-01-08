@@ -14,7 +14,13 @@ val first = Builtin("first", {env, rest ->
     }
 })
 
-val rest = Builtin("rest", {env, rest -> QExpression(rest.subList(1, rest.size))})
+val rest = Builtin("rest", {env, rest ->
+    val first = rest.first()
+    when(first) {
+        is QExpression -> QExpression(first.exprs.drop(1))
+        else -> throw IllegalArgumentException("expected q-expression but got ${first.print()}")
+    }
+})
 
 val eval = Builtin("eval", {env, rest ->
     if (rest.size != 1) throw IllegalArgumentException("expected 1 argument but got ${rest.size}")
