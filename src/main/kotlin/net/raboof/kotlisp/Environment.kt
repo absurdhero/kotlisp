@@ -3,9 +3,7 @@ package net.raboof.kotlisp
 import java.util.*
 import kotlin.collections.set
 
-
-open class Environment(val parent: Environment?) {
-    private val map : MutableMap<String, Expr> = HashMap()
+open class Environment(val parent: Environment?, private val map : MutableMap<String, Expr> = HashMap()) {
 
     public operator fun get(value: String) : Expr {
         if (parent != null) {
@@ -24,4 +22,8 @@ open class Environment(val parent: Environment?) {
     }
 
     public fun symbols() : List<String> = map.keys.toList()
+
+    fun childOf(parent: Environment): Environment {
+        return Environment(parent, HashMap(map))
+    }
 }

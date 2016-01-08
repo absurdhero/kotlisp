@@ -21,6 +21,12 @@ class LambdaTest : EvalHarness() {
         assertEquals("3", eval("(- 1 2)"))
     }
 
+    @Test fun partialApplication() {
+        eval("(def {add-mul} (\\ {x y} {+ x (* x y)}))")
+        eval("(def {add-mul-ten} (add-mul 10))")
+        assertEquals("510", eval("(add-mul-ten 50)"))
+    }
+
     @Test fun overrideEnvironment() {
         eval("(def {plusone} (\\ {a} {+ a 1}))")
         eval("(def {a b} 100 10)")

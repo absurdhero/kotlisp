@@ -3,6 +3,7 @@ package net.raboof.kotlisp
 class Lambda : Expr {
     val args: List<String>
     val body: SExpression
+    val env: Environment
 
     constructor(arguments: QExpression, rest: Expr) {
         args = arguments.exprs.map {
@@ -16,6 +17,13 @@ class Lambda : Expr {
             is QExpression -> body = SExpression(rest.exprs)
             else -> throw IllegalArgumentException("function body must be a q-expression")
         }
+        env = Environment(null)
+    }
+
+    constructor(args: List<String>, body: SExpression, env: Environment) {
+        this.args = args
+        this.body = body
+        this.env = env
     }
 
     override fun print(): String {
@@ -27,14 +35,19 @@ class Lambda : Expr {
     }
 
     operator fun invoke(environment: Environment, rest: List<Expr>): Expr {
-        if (args.size != rest.size) {
+        if (args.size < rest.size) {
             throw IllegalArgumentException("arity mismatch");
         }
 
-        val fenv = Environment(environment)
         for ((arg, value) in args zip rest) {
-            fenv[arg] = value
+            env[arg] = value
         }
-        return body.evaluate(fenv)
+
+        // if some arguments were not supplied, chop off applied args and return a new partial function
+        if (args.size > rest.size) {
+            return Lambda(args.subList(rest.size, args.size), body, env)
+        }
+
+        return body.evaluate(env.childOf(environment))
     }
 }
