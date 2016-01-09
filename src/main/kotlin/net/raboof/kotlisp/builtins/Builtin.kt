@@ -9,7 +9,11 @@ class Builtin(val name: String, val f: (ChainedEnvironment, List<Expr>) -> Expr)
     }
 
     operator fun invoke(environment: ChainedEnvironment, rest: List<Expr>): Expr {
-        return f(environment, rest)
+        try {
+            return f(environment, rest)
+        } catch (e: IllegalArgumentException) {
+            throw IllegalArgumentException("$name " + e.message, e)
+        }
     }
 
     override fun print(): String {

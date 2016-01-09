@@ -18,6 +18,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(join)
         register(cons)
         register(len)
+        register(isNil)
 
         // logic
         register(trueSymbol)
@@ -38,6 +39,16 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(gte)
         register(lte)
 
+        // strings
+        register(concat)
+        register(isEmpty)
+
+        // io
+        register(load)
+        register(printString)
+        register(print)
+        register(error)
+        register(readLine)
     }
 
     fun register(builtin: Builtin) {

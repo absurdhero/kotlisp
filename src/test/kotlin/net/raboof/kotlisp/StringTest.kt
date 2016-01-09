@@ -24,4 +24,15 @@ class StringTest : EvalHarness() {
         assertEquals("", eval("""(rest "a")"""))
         assertEquals("", eval("""(rest "")"""))
     }
+
+    @Test fun concat() {
+        assertEquals("ab", eval("""(concat "a" "b")"""))
+        assertEquals("b", eval("""(concat "" "b")"""))
+    }
+
+    @Test fun isEmpty() {
+        assertEquals("#f", eval("""(empty? "a")"""))
+        assertEquals("#t", eval("""(empty? "")"""))
+    }
+
 }

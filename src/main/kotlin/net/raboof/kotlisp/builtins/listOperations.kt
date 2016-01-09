@@ -1,9 +1,6 @@
 package net.raboof.kotlisp.builtins
 
-import net.raboof.kotlisp.Expr
-import net.raboof.kotlisp.QExpression
-import net.raboof.kotlisp.SExpression
-import net.raboof.kotlisp.Str
+import net.raboof.kotlisp.*
 
 val expectSequence = { arg: Expr -> IllegalArgumentException("expected sequence but got ${arg.print()}") }
 
@@ -67,4 +64,13 @@ val len = Builtin("len") { env, rest ->
             throw expectSequence(arg)
         }
     }
+}
+
+val isNil = Builtin("nil?") { env, rest ->
+    assertLength(rest, 1)
+    when(rest.first()) {
+        SExpression.Empty -> True
+        else -> False
+    }
+
 }

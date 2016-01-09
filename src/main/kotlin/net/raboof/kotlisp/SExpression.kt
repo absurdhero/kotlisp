@@ -3,6 +3,10 @@ package net.raboof.kotlisp
 import net.raboof.kotlisp.builtins.Builtin
 
 data class SExpression(val exprs: List<Expr>) : Expr {
+    companion object {
+        val Empty = SExpression(emptyList())
+    }
+
     override fun print(): String {
         return "(${exprs.map { it.print() }.joinToString(" ")})"
     }

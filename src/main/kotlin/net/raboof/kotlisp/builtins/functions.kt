@@ -28,7 +28,7 @@ private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: QExpression)
     for ((s, v) in symbols.exprs.zip(values.exprs)) {
         env[(s as Symbol).value] = v
     }
-    return SExpression(emptyList())
+    return SExpression.Empty
 }
 
 val lambda = Builtin("\\") { env, rest ->

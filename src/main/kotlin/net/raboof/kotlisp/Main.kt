@@ -1,6 +1,7 @@
 package net.raboof.kotlisp
 
 import jline.UnsupportedTerminal
+import java.io.InputStreamReader
 import java.io.PrintWriter
 
 fun main(args: Array<String>) {
@@ -12,6 +13,10 @@ fun main(args: Array<String>) {
     console.prompt = "lisp> "
 
     val out = PrintWriter(console.output)
+
+    // hook up built-in io functions to the console
+    net.raboof.kotlisp.builtins.out = out
+    net.raboof.kotlisp.builtins.input = InputStreamReader(console.input).buffered()
 
     val parser = LispParser()
 
@@ -25,7 +30,11 @@ fun main(args: Array<String>) {
         }
 
         try {
-            out.println(parser.evaluate(env, line)?.print() ?: "error: could not parse")
+            val result = parser.evaluate(env, line)
+            if (result != null && result != SExpression.Empty)
+                out.println(result.print())
+            else if (result == null)
+                out.println("error: could not parse")
         } catch (e: RuntimeException) {
             out.println("error: " + e.message)
         }

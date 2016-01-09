@@ -21,4 +21,8 @@ class PreambleTest : EvalHarness(CoreEnvironment()) {
         assertTrue("(neq 2 1)")
         assertFalse("(neq 1 1)")
     }
+
+    @Test fun nil() {
+        assertTrue("(nil? nil)")
+    }
 }

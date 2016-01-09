@@ -13,12 +13,12 @@ public class LispParser() : CharParsers<String>() {
         }
 
     /** evaluate the input or return null */
-    fun evaluate(env: ChainedEnvironment, input: String): Expr? {
-        var result: Result<String, Expr>? = line(input)
+    public fun evaluate(env: ChainedEnvironment, input: String): Expr? {
+        var result: Result<String, Expr>? = statement(input)
         var lastValue = result?.value?.evaluate(env)
 
         while (result != null && result.rest.isNotEmpty()) {
-            result = line(result.rest)
+            result = statement(result.rest)
             lastValue = result?.value?.evaluate(env)
         }
 
@@ -40,7 +40,7 @@ public class LispParser() : CharParsers<String>() {
 
     // skip lines starting with ;
     var newline = char(Regex("[\n\r]"))
-    val line = repeat(concat(char(';'), repeat(char(Regex("[^\n\r]")))) and repeat1(newline)) and (expr before repeat(newline))
+    val statement = repeat(concat(char(';'), repeat(char(Regex("[^\n\r]")))) and repeat1(newline)) and (expr before repeat(newline))
 
     init {
         sexprRef.set(repeat(expr).between(wsChar('('), wsChar(')')).map { SExpression(it) })
