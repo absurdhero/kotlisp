@@ -25,7 +25,7 @@ data class SExpression(val exprs: List<Expr>) : Expr {
                 head.invoke(environment, rest)
             }
             is Lambda -> {
-                head.invoke(environment, rest)
+                head.invoke(rest)
             }
             is Number, is Symbol, is True, is False -> {
                 if (rest.size > 0) {

@@ -7,7 +7,7 @@ class Lambda : Expr {
     val body: SExpression
     val enclosingEnv: Environment
 
-    constructor(arguments: QExpression, rest: Expr) : this(
+    constructor(arguments: QExpression, rest: Expr, enclosingEnv: Environment) : this(
             arguments.exprs.map {
                 when (it) {
                     is Symbol -> it.value
@@ -17,7 +17,7 @@ class Lambda : Expr {
             when (rest) {
                 is QExpression -> SExpression(rest.exprs)
                 else -> throw IllegalArgumentException("function body must be a q-expression")
-            }, Environment.Empty)
+            }, enclosingEnv)
 
     constructor(args: List<String>, body: SExpression, enclosingEnv: Environment) {
         this.args = args
@@ -49,11 +49,8 @@ class Lambda : Expr {
         return this
     }
 
-    operator fun invoke(parentEnv: Environment, givenArgs: List<Expr>): Expr {
-        val env = when(enclosingEnv) {
-            is ChainedEnvironment -> ChainedEnvironment(enclosingEnv.childOf(parentEnv))
-            else -> ChainedEnvironment(parentEnv)
-        }
+    operator fun invoke(givenArgs: List<Expr>): Expr {
+        val env = ChainedEnvironment(enclosingEnv)
 
         for ((arg, value) in args zip givenArgs) {
             env[arg] = value
