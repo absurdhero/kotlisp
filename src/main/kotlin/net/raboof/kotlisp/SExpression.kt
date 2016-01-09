@@ -27,7 +27,7 @@ data class SExpression(val exprs: List<Expr>) : Expr {
             is Lambda -> {
                 head.invoke(environment, rest)
             }
-            is Number, is Symbol -> {
+            is Number, is Symbol, is True, is False -> {
                 if (rest.size > 0) {
                     throw IllegalArgumentException("cannot evaluate ${head.print()} as a function")
                 }

@@ -12,4 +12,8 @@ data class Number(val value: String) : Expr {
     override fun evaluate(environment: ChainedEnvironment): Number {
         return this
     }
+
+    fun toLong() : Long {
+        return value.toLong();
+    }
 }

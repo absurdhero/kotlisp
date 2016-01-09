@@ -11,12 +11,6 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(lambda)
         register(eval)
 
-        // numerical
-        register(plus)
-        register(minus)
-        register(multiply)
-        register(divide)
-
         // lists
         register(first)
         register(rest)
@@ -24,6 +18,21 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(join)
         register(cons)
         register(len)
+
+        // logic
+        register(trueSymbol)
+        register(falseSymbol)
+
+        // numerical
+        register(plus)
+        register(minus)
+        register(multiply)
+        register(divide)
+        register(gt)
+        register(lt)
+        register(gte)
+        register(lte)
+
     }
 
     fun register(builtin: Builtin) {

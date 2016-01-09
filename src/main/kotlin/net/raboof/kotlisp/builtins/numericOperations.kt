@@ -1,9 +1,7 @@
 package net.raboof.kotlisp.builtins
 
-import net.raboof.kotlisp.ChainedEnvironment
-import net.raboof.kotlisp.Expr
+import net.raboof.kotlisp.*
 import net.raboof.kotlisp.Number
-import net.raboof.kotlisp.SExpression
 
 val plus = mathBuiltin("+", { it.fold (0L, { acc, next -> acc + next }) })
 val minus = mathBuiltin("-", { it.reduce { acc, next -> acc - next } })
@@ -28,4 +26,32 @@ private fun numberTerms(env: ChainedEnvironment, head: String, rest: List<Expr>)
             else -> throw IllegalArgumentException("cannot evaluate argument ${it.print()} of $head")
         }
     }
+}
+
+val gt = Builtin(">") { env, rest ->
+    val first = assertType<Number>(rest.component1())
+    val second = assertType<Number>(rest.component2())
+
+    if (first.toLong() > second.toLong()) True else False
+}
+
+val lt = Builtin("<") { env, rest ->
+    val first = assertType<Number>(rest.component1())
+    val second = assertType<Number>(rest.component2())
+
+    if (first.toLong() < second.toLong()) True else False
+}
+
+val gte = Builtin(">=") { env, rest ->
+    val first = assertType<Number>(rest.component1())
+    val second = assertType<Number>(rest.component2())
+
+    if (first.toLong() >= second.toLong()) True else False
+}
+
+val lte = Builtin("<=") { env, rest ->
+    val first = assertType<Number>(rest.component1())
+    val second = assertType<Number>(rest.component2())
+
+    if (first.toLong() <= second.toLong()) True else False
 }
