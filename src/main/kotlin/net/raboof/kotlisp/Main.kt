@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
 
         try {
             val result = parser.evaluate(env, line)
-            if (result != null && result != SExpression.Empty)
+            if (result != null && result != QExpression.Empty)
                 out.println(result.print())
             else if (result == null)
                 out.println("error: could not parse")

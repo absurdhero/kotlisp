@@ -17,7 +17,7 @@ data class SExpression(val exprs: List<Expr>) : Expr {
 
     override fun evaluate(environment: ChainedEnvironment): Expr {
         if (exprs.size == 0) {
-            return this
+            return QExpression.Empty
         }
 
         // first evaluate items from left to right

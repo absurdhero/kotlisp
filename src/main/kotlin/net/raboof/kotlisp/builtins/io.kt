@@ -27,13 +27,13 @@ val printString = Builtin("print-string") { env, rest ->
 val print = Builtin("print") { env, rest ->
     assertLength(rest, 1)
     out.write(rest.first().print() + "\n")
-    SExpression.Empty
+    QExpression.Empty
 }
 
 val error = Builtin("error") { env, rest ->
     assertLength(rest, 1)
     val msg = assertType<Str>(rest.first()).value
     out.write("error: $msg\n")
-    SExpression.Empty
+    QExpression.Empty
 }
 

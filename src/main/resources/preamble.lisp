@@ -3,7 +3,7 @@
 ; syntactic sugar for defining a function
 (def {fun} (\ {args body} {def (list (first args)) (\ (rest args) body) }))
 
-(def {nil} (eval {}))
+(def {nil} {})
 
 ; additional logic operations
 (fun {not pred} {if {pred} {#f} {#t}})

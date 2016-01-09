@@ -15,7 +15,7 @@ val concat = Builtin("concat") { env, rest ->
 val isEmpty = Builtin("empty?") { env, rest ->
     assertLength(rest, 1)
     when(rest.first()) {
-        SExpression.Empty -> True
+        QExpression.Empty -> True
         QExpression.Empty -> True
         Str("") -> True
         else -> False

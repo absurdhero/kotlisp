@@ -69,7 +69,7 @@ val len = Builtin("len") { env, rest ->
 val isNil = Builtin("nil?") { env, rest ->
     assertLength(rest, 1)
     when(rest.first()) {
-        SExpression.Empty -> True
+        QExpression.Empty -> True
         else -> False
     }
 

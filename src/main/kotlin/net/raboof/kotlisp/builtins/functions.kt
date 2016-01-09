@@ -12,7 +12,7 @@ val put = Builtin("=") { env, rest ->
     put(env, rest, symbols)
 }
 
-private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: QExpression): SExpression {
+private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: QExpression): QExpression {
     val values = QExpression(rest.drop(1))
 
     if (symbols.exprs.size != values.exprs.size) {
@@ -28,7 +28,7 @@ private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: QExpression)
     for ((s, v) in symbols.exprs.zip(values.exprs)) {
         env[(s as Symbol).value] = v
     }
-    return SExpression.Empty
+    return QExpression.Empty
 }
 
 val lambda = Builtin("\\") { env, rest ->
