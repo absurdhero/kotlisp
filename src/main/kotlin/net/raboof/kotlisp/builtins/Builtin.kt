@@ -15,4 +15,8 @@ class Builtin(val name: String, val f: (ChainedEnvironment, List<Expr>) -> Expr)
     override fun print(): String {
         return "Builtin<$name>"
     }
+
+    override fun toString(): String {
+        return print();
+    }
 }

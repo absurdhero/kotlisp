@@ -41,6 +41,14 @@ class LambdaTest : EvalHarness(CoreEnvironment()) {
         })
     }
 
+    @Test fun varargs() {
+        eval("(fun {plus & args} {eval (join {+} args)})")
+        assertEquals("5", eval("(plus 2 3)"))
+        assertEquals("1", eval("(plus 1)"))
+        assertEquals("10", eval("(plus 1 2 3 4)"))
+        assertEquals("0", eval("(plus)"))
+    }
+
     @Test fun recursion() {
         eval("""
         (fun {fib N}

@@ -9,7 +9,7 @@ val expectSequence = { arg: Expr -> IllegalArgumentException("expected sequence 
 
 val first = Builtin("first") { env, rest ->
     assertLength(rest, 1)
-    val arg = rest.first();
+    val arg = rest.first()
     when(arg) {
         is QExpression -> arg.exprs.first()
         is Str -> if(arg.value.length > 0) Str(arg.value[0].toString()) else Str("")

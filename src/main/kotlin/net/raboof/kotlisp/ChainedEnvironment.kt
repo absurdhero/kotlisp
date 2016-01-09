@@ -3,7 +3,7 @@ package net.raboof.kotlisp
 import java.util.*
 
 open class ChainedEnvironment(
-        val parent: Environment = Environment.Empty(),
+        val parent: Environment = Environment.Empty,
         private val map: MutableMap<String, Expr> = HashMap())
 : Environment {
 
@@ -20,6 +20,10 @@ open class ChainedEnvironment(
     }
 
     public override fun symbols(): List<String> = map.keys.toList() + parent.symbols()
+
+    override fun toString(): String {
+        return "{this: $map, parent: $parent}";
+    }
 
     /** return a new environment with the contents of this environment but with a different parent */
     public fun childOf(parent: Environment): ChainedEnvironment {
