@@ -8,9 +8,15 @@ class ListBuiltinTest : EvalHarness() {
         assertEquals("3", eval("(eval (first {(+ 1 2) (+ 10 10)}))"))
     }
 
+    @Test fun first() {
+        assertEquals("a", eval("(first {a b c})"))
+        assertEquals("a", eval("(first {a})"))
+    }
+
     @Test fun rest() {
         assertEquals("{b c}", eval("(rest {a b c})"))
         assertEquals("{}", eval("(rest {a})"))
+        assertEquals("{}", eval("(rest {})"))
     }
 
     @Test fun list() {

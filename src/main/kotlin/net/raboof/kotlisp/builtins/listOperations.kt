@@ -1,19 +1,34 @@
 package net.raboof.kotlisp.builtins
 
+import net.raboof.kotlisp.Expr
 import net.raboof.kotlisp.QExpression
 import net.raboof.kotlisp.SExpression
+import net.raboof.kotlisp.Str
 
+val expectSequence = { arg: Expr -> IllegalArgumentException("expected sequence but got ${arg.print()}") }
 
 val first = Builtin("first") { env, rest ->
     assertLength(rest, 1)
-    val first = assertType<QExpression>(rest.first())
-    first.exprs.first()
+    val arg = rest.first();
+    when(arg) {
+        is QExpression -> arg.exprs.first()
+        is Str -> if(arg.value.length > 0) Str(arg.value[0].toString()) else Str("")
+        else -> {
+            throw expectSequence(arg)
+        }
+    }
 }
 
 val rest = Builtin("rest") { env, rest ->
     assertLength(rest, 1)
-    val first = assertType<QExpression>(rest.first())
-    QExpression(first.exprs.drop(1))
+    val arg = rest.first()
+    when(arg) {
+        is QExpression -> QExpression(arg.exprs.drop(1))
+        is Str -> if(arg.value.length > 0) Str(arg.value.substring(1)) else Str("")
+        else -> {
+            throw expectSequence(arg)
+        }
+    }
 }
 
 val eval = Builtin("eval") { env, rest ->
@@ -44,6 +59,12 @@ val cons = Builtin("cons") { env, rest ->
 
 val len = Builtin("len") { env, rest ->
     assertLength(rest, 1)
-    val first = assertType<QExpression>(rest.first())
-    net.raboof.kotlisp.Number(first.exprs.size)
+    val arg = rest.first()
+    when(arg) {
+        is QExpression -> net.raboof.kotlisp.Number(arg.exprs.size)
+        is Str -> net.raboof.kotlisp.Number(arg.value.length)
+        else -> {
+            throw expectSequence(arg)
+        }
+    }
 }

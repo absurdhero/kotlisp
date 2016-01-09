@@ -25,9 +25,10 @@ public class LispParser() : CharParsers<String>() {
         return lastValue
     }
 
-    val number: Parser<String, Expr> = whitespace and charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) as Expr }
+    val number: Parser<String, Expr> = charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) }
+    val string: Parser<String, Expr> = repeat((char('\\') and anyChar) or  char(Regex("[^\"]"))).between(wsChar('"'), char('"')).string().map { Str(it) }
 
-    val symbol = whitespace and concat(char(Regex("""[^(){}\d\s]""")), repeat(char(Regex("""[^(){}\s]""")))).string().map { Symbol(it) as Expr }
+    val symbol: Parser<String, Expr> = concat(char(Regex("""[^(){}\d\s]""")), repeat(char(Regex("""[^(){}\s]""")))).string().map { Symbol(it) }
 
     val sexprRef: Reference<String, Expr> = Reference()
     val sexpr = sexprRef.get()
@@ -35,7 +36,7 @@ public class LispParser() : CharParsers<String>() {
     val qexprRef: Reference<String, Expr> = Reference()
     val qexpr = qexprRef.get()
 
-    val expr = number or symbol or sexpr or qexpr
+    val expr = whitespace and (number or string or symbol or sexpr or qexpr)
 
     // skip lines starting with ;
     var newline = char(Regex("[\n\r]"))
