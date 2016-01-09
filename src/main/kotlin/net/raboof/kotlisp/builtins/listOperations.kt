@@ -1,7 +1,15 @@
 package net.raboof.kotlisp.builtins
 
+import net.raboof.kotlisp.Expr
 import net.raboof.kotlisp.QExpression
 import net.raboof.kotlisp.SExpression
+
+inline fun <reified T> assertType(obj: Expr) {
+    if (obj !is T) {
+        throw IllegalArgumentException("expected ${T::class.simpleName} but got ${obj.print()}")
+    }
+}
+
 
 val first = Builtin("first") { env, rest ->
     val first = rest.first()
@@ -37,4 +45,15 @@ val join = Builtin("join") { env, rest ->
             else -> throw IllegalArgumentException("expected q-expression but got ${it.print()}")
         }
     })
+}
+
+val cons = Builtin("cons") { env, rest ->
+    val second = rest.component2()
+    assertType<QExpression>(second)
+    QExpression(listOf(rest.first()) + (second as QExpression).exprs)
+}
+
+val len = Builtin("len") { env, rest ->
+    assertType<QExpression>(rest.first())
+    net.raboof.kotlisp.Number((rest.first() as QExpression).exprs.size)
 }

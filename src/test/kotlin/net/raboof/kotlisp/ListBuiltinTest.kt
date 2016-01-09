@@ -16,4 +16,13 @@ class ListBuiltinTest : EvalHarness() {
     @Test fun list() {
         assertEquals("{1 2 3}", eval("(list 1 2 3)"))
     }
+
+    @Test fun cons() {
+        assertEquals("{1 2 3}", eval("(cons 1 {2 3})"))
+        assertEquals("{{1} 2 3}", eval("(cons {1} {2 3})"))
+    }
+
+    @Test fun len() {
+        assertEquals("2", eval("(len {1 1})"))
+    }
 }
