@@ -15,6 +15,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
 
         // lists
         register(first)
+        register(head)
         register(rest)
         register(list)
         register(join)

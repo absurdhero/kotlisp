@@ -13,6 +13,11 @@ class ListBuiltinTest : EvalHarness() {
         assertEquals("a", eval("(first {a})"))
     }
 
+    @Test fun head() {
+        assertEquals("{a}", eval("(head {a b c})"))
+        assertEquals("{a}", eval("(head {a})"))
+    }
+
     @Test fun rest() {
         assertEquals("{b c}", eval("(rest {a b c})"))
         assertEquals("{}", eval("(rest {a})"))

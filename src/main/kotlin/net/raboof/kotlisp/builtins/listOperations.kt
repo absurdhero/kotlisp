@@ -16,6 +16,12 @@ val first = Builtin("first") { env, rest ->
     }
 }
 
+val head = Builtin("head") { env, rest ->
+    assertLength(rest, 1)
+    val arg = assertType<QExpression>(rest.first())
+    QExpression(listOf(arg.exprs.first()))
+}
+
 val rest = Builtin("rest") { env, rest ->
     assertLength(rest, 1)
     val arg = rest.first()
