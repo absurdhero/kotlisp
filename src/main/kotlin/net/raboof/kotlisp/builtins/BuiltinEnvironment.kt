@@ -22,6 +22,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         // logic
         register(trueSymbol)
         register(falseSymbol)
+        register(ifCondition)
 
         // numerical
         register(plus)

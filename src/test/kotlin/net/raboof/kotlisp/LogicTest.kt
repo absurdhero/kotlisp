@@ -14,4 +14,10 @@ class LogicTest : EvalHarness() {
         assertEquals("#t", eval("(<= 2 9)"))
     }
 
+    @Test fun ifCondition() {
+        assertEquals("1", eval("(if {#t} {1} {2})"))
+        assertEquals("2", eval("(if {#f} {1} {2})"))
+        assertEquals("1", eval("(if {< 5 10} {1} {2})"))
+        assertEquals("2", eval("(if {> 5 10} {1} {2})"))
+    }
 }
