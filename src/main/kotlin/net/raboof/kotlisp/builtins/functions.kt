@@ -1,20 +1,16 @@
 package net.raboof.kotlisp.builtins
 
 import net.raboof.kotlisp.*
-import kotlin.collections.emptyList
-import kotlin.collections.first
-import kotlin.collections.zip
 
-
-val def = Builtin("def", {env, rest ->
+val def = Builtin("def") { env, rest ->
     val symbols = rest.first().evaluate(env)
     put(env.global(), rest, symbols)
-})
+}
 
-val put = Builtin("=", {env, rest ->
+val put = Builtin("=") { env, rest ->
     val symbols = rest.first().evaluate(env)
     put(env, rest, symbols)
-})
+}
 
 private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: Expr): SExpression {
     val values = QExpression(rest.drop(1))
@@ -40,11 +36,11 @@ private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: Expr): SExpr
     }
 }
 
-val lambda = Builtin("\\", {env, rest ->
+val lambda = Builtin("\\") { env, rest ->
     val args = rest.component1() as QExpression
     Lambda(args, rest.component2())
-})
+}
 
-val env = Builtin("env", {env, rest ->
+val env = Builtin("env") { env, rest ->
     QExpression(env.symbols().sorted().map { Symbol(it) })
-})
+}

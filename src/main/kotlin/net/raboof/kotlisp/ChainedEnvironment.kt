@@ -1,7 +1,6 @@
 package net.raboof.kotlisp
 
 import java.util.*
-import kotlin.collections.set
 
 open class ChainedEnvironment(
         val parent: Environment = Environment.Empty(),
@@ -27,8 +26,8 @@ open class ChainedEnvironment(
         return ChainedEnvironment(parent, HashMap(map))
     }
 
-    public fun global() : ChainedEnvironment {
-        return when(parent) {
+    public fun global(): ChainedEnvironment {
+        return when (parent) {
             is ChainedEnvironment -> parent.global()
             else -> this
         }

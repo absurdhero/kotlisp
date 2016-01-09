@@ -1,17 +1,13 @@
 package net.raboof.kotlisp
 
 import net.raboof.kotlisp.builtins.Builtin
-import kotlin.collections.first
-import kotlin.collections.joinToString
-import kotlin.collections.map
-
 
 data class SExpression(val exprs: List<Expr>) : Expr {
     override fun print(): String {
-        return "(${exprs.map{ it.print() }.joinToString(" ")})"
+        return "(${exprs.map { it.print() }.joinToString(" ")})"
     }
 
-    override fun toString() : String {
+    override fun toString(): String {
         return print();
     }
 

@@ -2,9 +2,8 @@ package net.raboof.kotlisp
 
 import jline.UnsupportedTerminal
 import java.io.PrintWriter
-import kotlin.text.toLowerCase
 
-fun main(args : Array<String>) {
+fun main(args: Array<String>) {
     // a hack for IntelliJ on Windows
     jline.TerminalFactory.registerFlavor(jline.TerminalFactory.Flavor.WINDOWS, UnsupportedTerminal::class.java)
 
@@ -18,7 +17,7 @@ fun main(args : Array<String>) {
 
     val env = CoreEnvironment()
 
-    while(true) {
+    while (true) {
         val line = console.readLine() ?: break
 
         if (line.toLowerCase() == "exit") {

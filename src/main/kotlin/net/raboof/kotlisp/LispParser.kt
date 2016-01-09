@@ -1,10 +1,6 @@
 package net.raboof.kotlisp
 
 import net.raboof.parsekt.*
-import kotlin.text.Regex
-import kotlin.text.isDigit
-import kotlin.text.substring
-
 
 public class LispParser() : CharParsers<String>() {
     override val anyChar: Parser<String, Char>

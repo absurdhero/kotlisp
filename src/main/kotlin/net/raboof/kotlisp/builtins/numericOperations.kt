@@ -4,18 +4,13 @@ import net.raboof.kotlisp.ChainedEnvironment
 import net.raboof.kotlisp.Expr
 import net.raboof.kotlisp.Number
 import net.raboof.kotlisp.SExpression
-import kotlin.collections.fold
-import kotlin.collections.map
-import kotlin.collections.reduce
-import kotlin.text.toLong
 
+val plus = mathBuiltin("+", { it.fold (0L, { acc, next -> acc + next }) })
+val minus = mathBuiltin("-", { it.reduce { acc, next -> acc - next } })
+val multiply = mathBuiltin("*", { it.fold (1L, { acc, next -> acc * next }) })
+val divide = mathBuiltin("/", { it.reduce { acc, next -> acc / next } })
 
-val plus  = mathBuiltin("+", { it.fold (0L, { acc, next -> acc + next })})
-val minus = mathBuiltin("-", { it.reduce { acc, next -> acc - next }})
-val multiply = mathBuiltin("*", { it.fold (1L, { acc, next -> acc * next })})
-val divide = mathBuiltin("/", { it.reduce { acc, next -> acc / next }})
-
-fun mathBuiltin(opName: String, f: (List<Long>) -> Long) : Builtin {
+fun mathBuiltin(opName: String, f: (List<Long>) -> Long): Builtin {
     return Builtin(opName, { env, rest -> Number(f(numberTerms(env, opName, rest)).toString()) })
 }
 
