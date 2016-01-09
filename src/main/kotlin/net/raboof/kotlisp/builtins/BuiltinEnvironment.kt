@@ -4,19 +4,24 @@ import net.raboof.kotlisp.ChainedEnvironment
 
 class BuiltinEnvironment : ChainedEnvironment() {
     init {
-        register(first)
-        register(rest)
-        register(list)
-        register(join)
+        // environmental
+        register(def)
+        register(put)
+        register(env)
+        register(lambda)
         register(eval)
+
+        // numerical
         register(plus)
         register(minus)
         register(multiply)
         register(divide)
-        register(def)
-        register(env)
-        register(lambda)
-        register(put)
+
+        // lists
+        register(first)
+        register(rest)
+        register(list)
+        register(join)
         register(cons)
         register(len)
     }

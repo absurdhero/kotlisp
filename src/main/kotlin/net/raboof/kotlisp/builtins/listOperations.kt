@@ -4,27 +4,22 @@ import net.raboof.kotlisp.Expr
 import net.raboof.kotlisp.QExpression
 import net.raboof.kotlisp.SExpression
 
-inline fun <reified T> assertType(obj: Expr) {
+inline fun <reified T> assertType(obj: Expr) : T {
     if (obj !is T) {
         throw IllegalArgumentException("expected ${T::class.simpleName} but got ${obj.print()}")
     }
+    return obj
 }
 
 
 val first = Builtin("first") { env, rest ->
-    val first = rest.first()
-    when (first) {
-        is QExpression -> first.exprs.first()
-        else -> throw IllegalArgumentException("expected q-expression but got ${first.print()}")
-    }
+    val first = assertType<QExpression>(rest.first())
+    first.exprs.first();
 }
 
 val rest = Builtin("rest") { env, rest ->
-    val first = rest.first()
-    when (first) {
-        is QExpression -> QExpression(first.exprs.drop(1))
-        else -> throw IllegalArgumentException("expected q-expression but got ${first.print()}")
-    }
+    val first = assertType<QExpression>(rest.first())
+    QExpression(first.exprs.drop(1))
 }
 
 val eval = Builtin("eval") { env, rest ->
@@ -48,12 +43,11 @@ val join = Builtin("join") { env, rest ->
 }
 
 val cons = Builtin("cons") { env, rest ->
-    val second = rest.component2()
-    assertType<QExpression>(second)
-    QExpression(listOf(rest.first()) + (second as QExpression).exprs)
+    val second = assertType<QExpression>(rest.component2())
+    QExpression(listOf(rest.first()) + second.exprs)
 }
 
 val len = Builtin("len") { env, rest ->
-    assertType<QExpression>(rest.first())
-    net.raboof.kotlisp.Number((rest.first() as QExpression).exprs.size)
+    val first = assertType<QExpression>(rest.first())
+    net.raboof.kotlisp.Number(first.exprs.size)
 }
