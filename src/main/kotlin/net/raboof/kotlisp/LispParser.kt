@@ -18,7 +18,15 @@ public class LispParser() : CharParsers<String>() {
 
     /** evaluate the input or return null */
     fun evaluate(env: ChainedEnvironment, input: String): Expr? {
-        return expr(input)?.value?.evaluate(env);
+        var result: Result<String, Expr>? = line(input)
+        var lastValue = result?.value?.evaluate(env);
+
+        while (result != null && result.rest.isNotEmpty()) {
+            result = line(result.rest)
+            lastValue = result?.value?.evaluate(env)
+        }
+
+        return lastValue;
     }
 
     val number: Parser<String, Expr> = whitespace and charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) as Expr }
@@ -32,6 +40,9 @@ public class LispParser() : CharParsers<String>() {
     val qexpr = qexprRef.get()
 
     val expr = number or symbol or sexpr or qexpr
+
+    // skip lines starting with ;
+    val line = repeat(concat(char(';'), repeat(char(Regex("[^\n\r]")))) and repeat1(char(Regex("[\n\r]")))) and expr
 
     init {
         sexprRef.set(repeat(expr).between(wsChar('('), wsChar(')')).map { SExpression(it) })
