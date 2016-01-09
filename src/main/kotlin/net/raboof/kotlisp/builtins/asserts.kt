@@ -14,3 +14,9 @@ fun assertLength(list: List<Expr>, length: Int) {
         throw IllegalArgumentException("expected $length arguments but got ${list.size}")
     }
 }
+
+fun assertLengthAtLeast(list: List<Expr>, length: Int) {
+    if (list.size < length) {
+        throw IllegalArgumentException("expected at least $length arguments but got ${list.size}")
+    }
+}
