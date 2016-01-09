@@ -29,6 +29,7 @@ private fun numberTerms(env: ChainedEnvironment, head: String, rest: List<Expr>)
 }
 
 val gt = Builtin(">") { env, rest ->
+    assertLength(rest, 2)
     val first = assertType<Number>(rest.component1())
     val second = assertType<Number>(rest.component2())
 
@@ -36,6 +37,7 @@ val gt = Builtin(">") { env, rest ->
 }
 
 val lt = Builtin("<") { env, rest ->
+    assertLength(rest, 2)
     val first = assertType<Number>(rest.component1())
     val second = assertType<Number>(rest.component2())
 
@@ -43,6 +45,7 @@ val lt = Builtin("<") { env, rest ->
 }
 
 val gte = Builtin(">=") { env, rest ->
+    assertLength(rest, 2)
     val first = assertType<Number>(rest.component1())
     val second = assertType<Number>(rest.component2())
 
@@ -50,6 +53,7 @@ val gte = Builtin(">=") { env, rest ->
 }
 
 val lte = Builtin("<=") { env, rest ->
+    assertLength(rest, 2)
     val first = assertType<Number>(rest.component1())
     val second = assertType<Number>(rest.component2())
 
