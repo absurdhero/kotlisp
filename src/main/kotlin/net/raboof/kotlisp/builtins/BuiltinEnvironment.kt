@@ -16,6 +16,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(def)
         register(env)
         register(lambda)
+        register(put)
     }
 
     fun register(builtin: Builtin) {

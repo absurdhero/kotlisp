@@ -1,7 +1,6 @@
 package net.raboof.kotlisp
 
 import jline.UnsupportedTerminal
-import net.raboof.kotlisp.builtins.BuiltinEnvironment
 import java.io.PrintWriter
 import kotlin.text.toLowerCase
 
@@ -17,7 +16,7 @@ fun main(args : Array<String>) {
 
     val parser = LispParser()
 
-    val env = BuiltinEnvironment()
+    val env = CoreEnvironment()
 
     while(true) {
         val line = console.readLine() ?: break

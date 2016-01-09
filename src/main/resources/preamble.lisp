@@ -1,0 +1,1 @@
+(def {fun} (\ {args body} {def (list (first args)) (\ (rest args) body) }))

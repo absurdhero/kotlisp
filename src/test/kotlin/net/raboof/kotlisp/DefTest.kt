@@ -15,4 +15,8 @@ class DefTest : EvalHarness() {
         assertEquals("3", eval("(+ a 2)"))
     }
 
+    @Test fun putSameAsDefAtGlobalLevel() {
+        eval("(= {a} 1)")
+        assertEquals("3", eval("(+ a 2)"))
+    }
 }
