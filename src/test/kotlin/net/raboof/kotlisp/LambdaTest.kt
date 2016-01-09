@@ -4,7 +4,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class LambdaTest : EvalHarness() {
+class LambdaTest : EvalHarness(CoreEnvironment()) {
 
     @Test fun numberOfArguments() {
         eval("(def {plusone} (\\ {a} {+ a 1}))")
@@ -41,4 +41,20 @@ class LambdaTest : EvalHarness() {
         })
     }
 
+    @Test fun recursion() {
+        eval("""
+        (fun {fib N}
+          {if {or (eq N 0) (eq N 1)}
+            {1}
+            {+ (fib (- N 1)) (fib (- N 2))}
+          }
+        )
+            """)
+
+        assertEquals("1", eval("(fib 0)"))
+        assertEquals("1", eval("(fib 1)"))
+        assertEquals("2", eval("(fib 2)"))
+        assertEquals("3", eval("(fib 3)"))
+        assertEquals("5", eval("(fib 4)"))
+    }
 }
