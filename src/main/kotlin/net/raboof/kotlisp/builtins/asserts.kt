@@ -2,7 +2,7 @@ package net.raboof.kotlisp.builtins
 
 import net.raboof.kotlisp.Expr
 
-inline fun <reified T> assertType(obj: Expr) : T {
+inline fun <reified T> assertType(obj: Expr): T {
     if (obj !is T) {
         throw IllegalArgumentException("expected ${T::class.simpleName} but got ${obj.print()}")
     }
