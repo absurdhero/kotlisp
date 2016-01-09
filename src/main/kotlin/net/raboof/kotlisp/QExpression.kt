@@ -10,6 +10,6 @@ data class QExpression(val exprs: List<Expr>) : Expr {
     }
 
     override fun toString(): String {
-        return print();
+        return print()
     }
 }

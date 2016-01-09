@@ -36,7 +36,7 @@ class Lambda : Expr {
 
     operator fun invoke(environment: ChainedEnvironment, rest: List<Expr>): Expr {
         if (args.size < rest.size) {
-            throw IllegalArgumentException("arity mismatch");
+            throw IllegalArgumentException("arity mismatch")
         }
 
         for ((arg, value) in args zip rest) {

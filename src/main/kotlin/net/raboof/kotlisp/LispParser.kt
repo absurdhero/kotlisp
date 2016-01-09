@@ -15,14 +15,14 @@ public class LispParser() : CharParsers<String>() {
     /** evaluate the input or return null */
     fun evaluate(env: ChainedEnvironment, input: String): Expr? {
         var result: Result<String, Expr>? = line(input)
-        var lastValue = result?.value?.evaluate(env);
+        var lastValue = result?.value?.evaluate(env)
 
         while (result != null && result.rest.isNotEmpty()) {
             result = line(result.rest)
             lastValue = result?.value?.evaluate(env)
         }
 
-        return lastValue;
+        return lastValue
     }
 
     val number: Parser<String, Expr> = whitespace and charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) as Expr }

@@ -7,7 +7,7 @@ import net.raboof.kotlisp.SExpression
 val first = Builtin("first") { env, rest ->
     assertLength(rest, 1)
     val first = assertType<QExpression>(rest.first())
-    first.exprs.first();
+    first.exprs.first()
 }
 
 val rest = Builtin("rest") { env, rest ->

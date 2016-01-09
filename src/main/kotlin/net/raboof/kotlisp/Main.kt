@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 
     console.prompt = "lisp> "
 
-    val out = PrintWriter(console.output);
+    val out = PrintWriter(console.output)
 
     val parser = LispParser()
 
@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
         val line = console.readLine() ?: break
 
         if (line.toLowerCase() == "exit") {
-            break;
+            break
         }
 
         try {

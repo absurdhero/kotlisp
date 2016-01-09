@@ -8,12 +8,12 @@ data class SExpression(val exprs: List<Expr>) : Expr {
     }
 
     override fun toString(): String {
-        return print();
+        return print()
     }
 
     override fun evaluate(environment: ChainedEnvironment): Expr {
         if (exprs.size == 0) {
-            return this;
+            return this
         }
 
         // first evaluate items from left to right
