@@ -2,8 +2,8 @@ package net.raboof.kotlisp
 
 data class Str(val value: String) : Expr {
     companion object {
-        fun unescaped(s: String): Str {
-            if (s.length <= 1) return Str(s)
+        fun unescaped(s: String): String {
+            if (s.length <= 1) return s
 
             var unescaped = StringBuilder()
             for (i in s.indices) {
@@ -15,15 +15,14 @@ data class Str(val value: String) : Expr {
                                 'n' -> '\n'
                                 't' -> '\t'
                                 'b' -> '\b'
-                                '\\' -> '\\'
-                                else -> "\\$c"
+                                else -> c
                             }
                     )
                 } else if (i == 0 || s[i - 1] != '\\') {
                     unescaped.append(s[i])
                 }
             }
-            return Str(unescaped.toString())
+            return unescaped.toString()
         }
 
         fun escape(s: String): String {
@@ -37,6 +36,7 @@ data class Str(val value: String) : Expr {
                             '\t' -> """\t"""
                             '\b' -> """\b"""
                             '\\' -> """\\"""
+                            '"' -> """\""""
                             else -> c
                         }
                 )

@@ -5,8 +5,8 @@ import kotlin.test.assertEquals
 
 class StringTest : EvalHarness() {
     @Test fun parse() {
-        assertEquals("\"foo", eval("\"\\\"foo\""))
-        assertEquals("", eval("\"\""))
+        check("\\\"foo", "\"\\\"foo\"")
+        check("", "\"\"")
         assertTrue("(eq \"foo\" \"foo\")")
     }
 
@@ -15,19 +15,19 @@ class StringTest : EvalHarness() {
     }
 
     @Test fun first() {
-        assertEquals("a", eval("""(first "abc")"""))
-        assertEquals("", eval("""(first "")"""))
+        check("a", """(first "abc")""")
+        check("", """(first "")""")
     }
 
     @Test fun rest() {
-        assertEquals("bc", eval("""(rest "abc")"""))
-        assertEquals("", eval("""(rest "a")"""))
-        assertEquals("", eval("""(rest "")"""))
+        check("bc", """(rest "abc")""")
+        check("", """(rest "a")""")
+        check("", """(rest "")""")
     }
 
     @Test fun concat() {
-        assertEquals("ab", eval("""(concat "a" "b")"""))
-        assertEquals("b", eval("""(concat "" "b")"""))
+        check("ab", """(concat "a" "b")""")
+        check("b", """(concat "" "b")""")
     }
 
     @Test fun isEmpty() {
@@ -35,4 +35,8 @@ class StringTest : EvalHarness() {
         assertEquals("#t", eval("""(empty? "")"""))
     }
 
+    // wraps expected result in quotes
+    private fun check(expected: String, expr: String) {
+        assertEquals("\"$expected\"", eval(expr))
+    }
 }
