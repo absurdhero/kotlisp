@@ -16,6 +16,18 @@ val first = Builtin("first") { env, rest ->
     }
 }
 
+val last = Builtin("last") { env, rest ->
+    assertLength(rest, 1)
+    val arg = rest.first()
+    when(arg) {
+        is QExpression -> arg.exprs.last()
+        is Str -> if(arg.value.length > 0) Str(arg.value[0].toString()) else Str("")
+        else -> {
+            throw expectSequence(arg)
+        }
+    }
+}
+
 val head = Builtin("head") { env, rest ->
     assertLength(rest, 1)
     val arg = assertType<QExpression>(rest.first())

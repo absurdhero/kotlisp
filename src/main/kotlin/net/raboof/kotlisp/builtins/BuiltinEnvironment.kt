@@ -1,8 +1,7 @@
 package net.raboof.kotlisp.builtins
 
 import net.raboof.kotlisp.ChainedEnvironment
-import net.raboof.kotlisp.builtins.interop.ctor
-import net.raboof.kotlisp.builtins.interop.methodCall
+import net.raboof.kotlisp.builtins.interop.*
 
 class BuiltinEnvironment : ChainedEnvironment() {
     init {
@@ -15,6 +14,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
 
         // lists
         register(first)
+        register(last)
         register(head)
         register(rest)
         register(list)
@@ -45,6 +45,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         // strings
         register(concat)
         register(isEmpty)
+        register(symbol)
 
         // io
         register(load)
@@ -56,6 +57,10 @@ class BuiltinEnvironment : ChainedEnvironment() {
         // java interop
         register(ctor)
         register(methodCall)
+        register(fieldGet)
+        register(fieldSet)
+        register(javaInt)
+        register(showMethods)
     }
 
     fun register(builtin: Builtin) {

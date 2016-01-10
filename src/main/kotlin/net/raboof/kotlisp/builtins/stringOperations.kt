@@ -22,3 +22,9 @@ val isEmpty = Builtin("empty?") { env, rest ->
     }
 
 }
+
+val symbol = Builtin("symbol") { env, rest ->
+    assertLength(rest, 1)
+    val first = assertType<Str>(rest.first())
+    Symbol(first.value)
+}

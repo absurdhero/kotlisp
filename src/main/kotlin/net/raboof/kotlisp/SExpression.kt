@@ -31,7 +31,7 @@ data class SExpression(val exprs: List<Expr>) : Expr {
             is Lambda -> {
                 head.invoke(rest)
             }
-            is Number, is Symbol, is True, is False -> {
+            is Number, is Symbol, is True, is False, QExpression.Empty -> {
                 if (rest.size > 0) {
                     throw IllegalArgumentException("cannot evaluate ${head.print()} as a function")
                 }
