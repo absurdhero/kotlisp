@@ -38,9 +38,11 @@ public class LispParser() : CharParsers<String>() {
 
     val expr = whitespace and (number or string or symbol or sexpr or qexpr)
 
-    // skip lines starting with ;
     var newline = char(Regex("[\n\r]"))
-    val statement = repeat(concat(char(';'), repeat(char(Regex("[^\n\r]")))) and repeat1(newline)) and (expr before repeat(newline))
+    // skip lines starting with ;
+    var comments = repeat(concat(char(';'), repeat(char(Regex("[^\n\r]")))) and repeat1(newline))
+
+    val statement = comments and (expr before repeat(newline)) before comments
 
     init {
         sexprRef.set(repeat(expr).between(wsChar('('), wsChar(')')).map { SExpression(it) })
