@@ -26,7 +26,7 @@ public class LispParser() : CharParsers<String>() {
     }
 
     val number: Parser<String, Expr> = charPrefix('-', repeat1(char(Char::isDigit))).string().map { Number(it) }
-    val string: Parser<String, Expr> = repeat((char('\\') and anyChar) or  char(Regex("[^\"]"))).between(wsChar('"'), char('"')).string().map { Str(it) }
+    val string: Parser<String, Expr> = substring(Regex("\"(\\\\.|[^\"])*\"")).string().map { Str.unescaped(it.substring(1, it.length-1)) }
 
     val symbol: Parser<String, Expr> = concat(char(Regex("""[^(){}\d\s]""")), repeat(char(Regex("""[^(){}\s]""")))).string().map { Symbol(it) }
 
