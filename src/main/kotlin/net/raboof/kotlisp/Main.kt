@@ -1,6 +1,8 @@
 package net.raboof.kotlisp
 
 import jline.UnsupportedTerminal
+import net.raboof.kotlisp.builtins.load
+import java.io.File
 import java.io.InputStreamReader
 import java.io.PrintWriter
 
@@ -21,6 +23,12 @@ fun main(args: Array<String>) {
     val parser = LispParser()
 
     val env = CoreEnvironment()
+
+    if (args.size > 0) {
+        System.out.println("loading file: " + File(args[0]).canonicalPath)
+        load.invoke(env, listOf(Str(args[0])))
+        System.exit(0)
+    }
 
     while (true) {
         val line = console.readLine() ?: break
