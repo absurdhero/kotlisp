@@ -1,12 +1,18 @@
 ; This file is evaluated before user code
 
 ; syntactic sugar for defining a function
-(def {fun} (\ {args body} {def (head args) (\ (rest args) body) }))
+(def {fun} (\ {args body} {def (list (nth 0 args)) (\ (rest args) body) }))
 
 (fun {unpack f xs} {eval (join (list f) xs)})
 (fun {pack f & xs} {f xs})
 
+; list operations
+
 (def {nil} {})
+
+(fun {first lst} {nth 0 lst})
+(fun {last lst} {nth (- (len lst) 1) lst})
+(fun {head lst} {list (nth 0 lst)})
 
 ; additional logic operations
 (fun {not pred} {if {pred} {#f} {#t}})

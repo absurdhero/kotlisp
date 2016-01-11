@@ -3,7 +3,12 @@ package net.raboof.kotlisp
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class ListBuiltinTest : EvalHarness() {
+class ListOperationTest : EvalHarness() {
+    @Test fun nthIsZeroIndexed() {
+        assertEquals("a", eval("(nth 0 {a b c})"))
+        assertEquals("b", eval("(nth 1 {a b})"))
+    }
+
     @Test fun evalListOfSexprs() {
         assertEquals("3", eval("(eval (first {(+ 1 2) (+ 10 10)}))"))
     }

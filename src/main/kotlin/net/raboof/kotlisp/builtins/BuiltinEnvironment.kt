@@ -13,10 +13,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(eval)
 
         // lists
-        register(first)
-        register(last)
         register(nth)
-        register(head)
         register(rest)
         register(list)
         register(join)

@@ -4,7 +4,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class LambdaTest : EvalHarness(CoreEnvironment()) {
+class LambdaTest : EvalHarness() {
 
     @Test fun numberOfArguments() {
         eval("(def {plusone} (\\ {a} {+ a 1}))")

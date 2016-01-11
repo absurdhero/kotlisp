@@ -4,7 +4,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 /** test functions defined in preamble.lisp */
-class PreambleTest : EvalHarness(CoreEnvironment()) {
+class PreambleTest : EvalHarness() {
     @Test fun funSyntax() {
         eval("(fun {minus a b} {- b a})")
         assertEquals("90", eval("(minus 10 100)"))

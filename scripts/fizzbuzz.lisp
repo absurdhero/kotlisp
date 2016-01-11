@@ -31,12 +31,6 @@
      (list {#t} x )))
   (if {< x y} {fizzbuzz2 (+ x 1) y} {})})
 
-;    (select ( (= (% x 15) 0 ) "FizzBuzz")
-;            ( (= (% x 3) 0 ) "Fizz")
-;            ( (= (% x 5) 0 ) "Buzz")
-;            ( #t x)
 
-;(fun {foo x} {if {eq x 2} {print x} {}})
-
-;(fizzbuzz1 1 100)
-(fizzbuzz2 1 100)
+(fizzbuzz1 1 100)
+;(fizzbuzz2 1 100)

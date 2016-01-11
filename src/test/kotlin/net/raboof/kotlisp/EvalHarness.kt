@@ -1,9 +1,8 @@
 package net.raboof.kotlisp
 
-import net.raboof.kotlisp.builtins.BuiltinEnvironment
 import kotlin.test.assertEquals
 
-abstract class EvalHarness(val env: ChainedEnvironment = BuiltinEnvironment()) {
+abstract class EvalHarness(val env: ChainedEnvironment = ChainedEnvironment(CoreEnvironment())) {
     val parser = LispParser()
 
     protected fun eval(expression: String): String? = parser.evaluate(env, expression)?.print()
