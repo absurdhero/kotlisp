@@ -22,7 +22,7 @@ This language is a lisp-1 with lexical scoping. It follows some of the
 interesting quirks in the Build Your Own Lisp book including q-expressions.
 Instead of implementing quote and macros, there is a quoted lisp construct
 built into the language denoted by curly braces instead of parenthesis.
-Other than that, the language is most similar to scheme.
+Other than that, the language is more similar to scheme than common lisp.
 
 
 ### Features
@@ -42,11 +42,18 @@ of two arguments:
 (\ {arg1 arg2} {body})
 ```
 
+Defining a function and giving it a name at the same time looks like:
+
+```
+{fun {name arg1 arg2} {body})
+```
+
 Notice how the arguments and body are not normal lists. They are surrounded
 by curly braces instead of parenthesis. This changes the evaluation rules.
 Instead of evaluating `{arg1 arg2}`, the evaluator leaves it alone; it evaluates
 to itself. This is called a quoted list or q-expression. Other lisps implement
-this feature by preceding a normal list with a single-quote character.
+this feature by preceding a normal list with a single-quote character
+or by using macros.
 
 #### q-expressions
 
@@ -139,11 +146,10 @@ Examples
 Fibonacci:
 
 ```lisp
-(fun {fib N}
-     {if {or (eq N 0) (eq N 1)}
-       {1}
-       {+ (fib (- N 1)) (fib (- N 2))}
-     }
-)
+(fun {fib n} {
+  if {or (eq n 0) (eq n 1)}
+    {1}
+    {+ (fib (- n 1)) (fib (- n 2))}
+})
 ```
 
