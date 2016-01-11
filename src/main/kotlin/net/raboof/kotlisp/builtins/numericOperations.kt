@@ -7,6 +7,7 @@ val plus = mathBuiltin("+", { it.fold (0L, { acc, next -> acc + next }) })
 val minus = mathBuiltin("-", { it.reduce { acc, next -> acc - next } })
 val multiply = mathBuiltin("*", { it.fold (1L, { acc, next -> acc * next }) })
 val divide = mathBuiltin("/", { it.reduce { acc, next -> acc / next } })
+val modulo = mathBuiltin("%", { it.reduce { acc, next -> acc % next }})
 
 fun mathBuiltin(opName: String, f: (List<Long>) -> Long): Builtin {
     return Builtin(opName, { env, rest -> Number(f(numberTerms(env, opName, rest)).toString()) })

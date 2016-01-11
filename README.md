@@ -94,6 +94,9 @@ More:
 
 `(nil? {}) => #t`
 
+`(list? {x}) => #t`
+
+
 #### IO
 
 `read-line` - read a line from standard input

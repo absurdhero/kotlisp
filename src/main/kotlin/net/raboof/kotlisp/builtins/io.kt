@@ -28,9 +28,10 @@ val print = Builtin("print") { env, rest ->
     assertLength(rest, 1)
     val arg = rest.first()
     when(arg) {
-        is Str -> out.write(arg.value + "\n")
-        else -> out.write(arg.print() + "\n")
+        is Str -> out.appendln(arg.value)
+        else -> out.appendln(arg.print())
     }
+    out.flush()
     QExpression.Empty
 }
 

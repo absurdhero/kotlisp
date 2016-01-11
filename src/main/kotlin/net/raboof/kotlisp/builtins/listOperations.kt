@@ -28,6 +28,20 @@ val last = Builtin("last") { env, rest ->
     }
 }
 
+val nth = Builtin("nth") { env, rest ->
+    assertLength(rest, 2)
+    val num = assertType<net.raboof.kotlisp.Number>(rest.first()).toInt()
+    val arg = rest.component2()
+
+    when(arg) {
+        is QExpression -> arg.exprs[num]
+        is Str -> if(arg.value.length > 0) Str(arg.value[num].toString()) else Str("")
+        else -> {
+            throw expectSequence(arg)
+        }
+    }
+}
+
 val head = Builtin("head") { env, rest ->
     assertLength(rest, 1)
     val arg = assertType<QExpression>(rest.first())
@@ -88,6 +102,15 @@ val isNil = Builtin("nil?") { env, rest ->
     assertLength(rest, 1)
     when(rest.first()) {
         QExpression.Empty -> True
+        else -> False
+    }
+
+}
+
+val isList = Builtin("list?") { env, rest ->
+    assertLength(rest, 1)
+    when(rest.first()) {
+        is QExpression-> True
         else -> False
     }
 

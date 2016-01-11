@@ -15,6 +15,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         // lists
         register(first)
         register(last)
+        register(nth)
         register(head)
         register(rest)
         register(list)
@@ -22,11 +23,13 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(cons)
         register(len)
         register(isNil)
+        register(isList)
 
         // logic
         register(trueSymbol)
         register(falseSymbol)
         register(ifCondition)
+        register(whileLoop)
         register(eq)
         register(and)
         register(or)
@@ -37,6 +40,7 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(minus)
         register(multiply)
         register(divide)
+        register(modulo)
         register(gt)
         register(lt)
         register(gte)

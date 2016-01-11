@@ -19,4 +19,8 @@ data class Number(val value: String) : Expr {
     fun toLong(): Long {
         return value.toLong()
     }
+
+    fun toInt(): Int {
+        return value.toInt()
+    }
 }

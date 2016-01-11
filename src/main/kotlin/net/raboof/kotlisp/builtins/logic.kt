@@ -22,6 +22,18 @@ val ifCondition = Builtin("if") { env, rest ->
     }
 }
 
+val whileLoop = Builtin("while") { env, rest ->
+    assertLength(rest, 2)
+    val predicate = SExpression(assertType<QExpression>(rest[0]).exprs)
+    val body = SExpression(assertType<QExpression>(rest[1]).exprs)
+
+    var lastExpr : Expr = QExpression.Empty
+    while (predicate.evaluate(env) == True) {
+        lastExpr = body.evaluate(env)
+    }
+    lastExpr
+}
+
 val eq = Builtin("eq") { env, rest ->
     assertLength(rest, 2)
     if (rest[0] == rest[1]) True else False

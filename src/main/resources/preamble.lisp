@@ -32,11 +32,13 @@
 
 
 ; Socket IO
+; see scripts/socket.lisp for example usage
 
 (fun {socket-create host port} {ctor "java.net.Socket" host (int port)})
 
-; returns a function that reads the next line of input from the socket
-; BufferedReader(InputStreamReader(Socket().inputStream)).readLine()
+; Returns a function that reads the next line of input from the socket.
+; Initially runs: BufferedReader(InputStreamReader(Socket().inputStream))
+; Calls readLine() on the buffer for each invocation
 (fun {socket-reader s}
      {do
        (= {reader} (ctor "java.io.BufferedReader" (ctor "java.io.InputStreamReader" (. s "getInputStream"))))
@@ -47,6 +49,5 @@
 (fun {socket-writer s}
      { do
        (= {writer} (ctor "java.io.BufferedWriter" (ctor "java.io.OutputStreamWriter" (. s "getOutputStream"))))
-       (\ {out} {. writer "write" out})
+       (\ {out} {do (. writer "write" out) (. writer "flush") })
      })
-
