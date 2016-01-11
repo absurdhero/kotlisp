@@ -4,9 +4,13 @@ import net.raboof.kotlisp.Expr
 
 inline fun <reified T> assertType(obj: Expr): T {
     if (obj !is T) {
-        throw IllegalArgumentException("expected ${T::class.simpleName} but got ${obj.print()}")
+        throw badTypeError<T>(obj)
     }
     return obj
+}
+
+inline fun <reified T> badTypeError(obj: Expr) : IllegalArgumentException {
+    return IllegalArgumentException("expected ${T::class.simpleName} but got ${obj.print()}")
 }
 
 fun assertLength(list: List<Expr>, length: Int) {

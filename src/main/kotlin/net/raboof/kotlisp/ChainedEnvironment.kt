@@ -25,6 +25,11 @@ open class ChainedEnvironment(
         return "{this: $map, parent: $parent}";
     }
 
+    /** return a new environment with the contents of this environment but with a different parent */
+    public fun childOf(parent: Environment): ChainedEnvironment {
+        return ChainedEnvironment(parent, HashMap(map))
+    }
+
     public fun global(): ChainedEnvironment {
         return when (parent) {
             is ChainedEnvironment -> parent.global()

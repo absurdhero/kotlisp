@@ -29,9 +29,9 @@ data class SExpression(val exprs: List<Expr>) : Expr {
                 head.invoke(environment, rest)
             }
             is Lambda -> {
-                head.invoke(rest)
+                head.invoke(ChainedEnvironment(), rest)
             }
-            is Number, is Symbol, is True, is False, QExpression.Empty -> {
+            is Str, is Number, is Symbol, is True, is False, QExpression.Empty -> {
                 if (rest.size > 0) {
                     throw IllegalArgumentException("cannot evaluate ${head.print()} as a function")
                 }

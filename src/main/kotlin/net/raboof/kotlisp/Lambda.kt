@@ -49,8 +49,12 @@ class Lambda : Expr {
         return this
     }
 
-    operator fun invoke(givenArgs: List<Expr>): Expr {
-        val env = ChainedEnvironment(enclosingEnv)
+    /* lambda supports taking in a call-time environment
+     * but we only pass in an empty one in for now
+     * which is used to store local bindings.
+     */
+    operator fun invoke(callEnv: ChainedEnvironment, givenArgs: List<Expr>): Expr {
+        val env = callEnv.childOf(enclosingEnv)
 
         for ((arg, value) in args zip givenArgs) {
             env[arg] = value

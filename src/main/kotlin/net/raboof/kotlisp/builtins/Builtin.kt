@@ -5,7 +5,7 @@ import net.raboof.kotlisp.Expr
 
 class Builtin(val name: String, val f: (ChainedEnvironment, List<Expr>) -> Expr) : Expr {
     override fun evaluate(environment: ChainedEnvironment): Expr {
-        throw UnsupportedOperationException()
+        return this
     }
 
     operator fun invoke(environment: ChainedEnvironment, rest: List<Expr>): Expr {
