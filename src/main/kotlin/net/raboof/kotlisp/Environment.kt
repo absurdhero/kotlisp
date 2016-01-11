@@ -18,7 +18,7 @@ interface Environment {
                 throw UnsupportedOperationException("cannot set variable in empty environment")
 
         public override fun toString(): String {
-            return "Empty";
+            return "Empty"
         }
     }
 }

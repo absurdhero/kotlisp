@@ -21,6 +21,6 @@ class Builtin(val name: String, val f: (ChainedEnvironment, List<Expr>) -> Expr)
     }
 
     override fun toString(): String {
-        return print();
+        return print()
     }
 }

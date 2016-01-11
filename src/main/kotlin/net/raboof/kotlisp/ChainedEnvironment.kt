@@ -22,7 +22,7 @@ open class ChainedEnvironment(
     public override fun symbols(): List<String> = map.keys.toList() + parent.symbols()
 
     override fun toString(): String {
-        return "{this: $map, parent: $parent}";
+        return "{this: $map, parent: $parent}"
     }
 
     /** return a new environment with the contents of this environment but with a different parent */
