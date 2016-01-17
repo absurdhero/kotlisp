@@ -6,20 +6,20 @@ public class LispParser() : CharParsers<String>() {
     override val anyChar: Parser<String, Char>
         get() = Parser { input: String ->
             when (input.length) {
-                0 -> null
-                1 -> Result(input[0], "")
-                else -> Result(input[0], input.substring(1))
+                0 -> Result.ParseError<String, Char>("EOF", null, "")
+                1 -> Result.Value(input[0], "")
+                else -> Result.Value(input[0], input.substring(1))
             }
         }
 
-    /** evaluate the input or return null */
+    /** evaluate the input or throw an exception */
     public fun evaluate(env: ChainedEnvironment, input: String): Expr? {
-        var result: Result<String, Expr>? = statement(input)
-        var lastValue = result?.value?.evaluate(env)
+        var result: Result<String, Expr> = statementOrNil(input)
+        var lastValue : Expr? = result.valueOrFail().evaluate(env)
 
-        while (result != null && result.rest.isNotEmpty()) {
-            result = statement(result.rest)
-            lastValue = result?.value?.evaluate(env)
+        while (result !is Result.ParseError && (result as Result.Value).rest.isNotEmpty()) {
+            result = statementOrNil(result.rest)
+            lastValue = result.valueOrFail().evaluate(env)
         }
 
         return lastValue
@@ -43,6 +43,7 @@ public class LispParser() : CharParsers<String>() {
     var comments = repeat(concat(char(';'), repeat(char(Regex("[^\n\r]")))) and repeat1(newline))
 
     val statement = comments and (expr before repeat(newline)) before comments
+    val statementOrNil = statement or (whitespace.map { QExpression.Empty }).cast<Expr>()
 
     init {
         sexprRef.set(repeat(expr).between(wsChar('('), wsChar(')')).map { SExpression(it) })
