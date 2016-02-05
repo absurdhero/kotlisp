@@ -2,7 +2,7 @@ package net.raboof.kotlisp
 
 import net.raboof.parsekt.*
 
-public class LispParser() : CharParsers<String>() {
+class LispParser() : CharParsers<String>() {
     override val anyChar: Parser<String, Char>
         get() = Parser { input: String ->
             when (input.length) {
@@ -13,7 +13,7 @@ public class LispParser() : CharParsers<String>() {
         }
 
     /** evaluate the input or throw an exception */
-    public fun evaluate(env: ChainedEnvironment, input: String): Expr? {
+    fun evaluate(env: ChainedEnvironment, input: String): Expr? {
         var result: Result<String, Expr> = statementOrNil(input)
         var lastValue : Expr? = result.valueOrFail().evaluate(env)
 
