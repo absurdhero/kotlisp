@@ -48,7 +48,7 @@ data class Str(val value: String) : Expr {
         return "\"${escape(value)}\""
     }
 
-    override fun evaluate(environment: ChainedEnvironment): Expr {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Expr {
         return this
     }
 }

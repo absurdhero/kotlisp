@@ -11,7 +11,7 @@ import java.lang.reflect.Method
 import java.util.*
 
 
-val methodCall = Builtin(".") { env, rest ->
+val methodCall = Builtin(".") { env, denv, rest ->
     assertLengthAtLeast(rest, 2)
     val first = rest[0]
     val target: Any = when (first) {
@@ -32,7 +32,7 @@ val methodCall = Builtin(".") { env, rest ->
     marshall(method.invoke(target, *params))
 }
 
-val ctor = Builtin("ctor") { env, rest ->
+val ctor = Builtin("ctor") { env, denv, rest ->
     assertLengthAtLeast(rest, 1)
     val cls = assertType<Str>(rest.first()).value
     val args = rest.drop(1)
@@ -96,7 +96,7 @@ private fun correspondsToPrimitive(proposed: Class<Any>?, primitive: Class<*>?):
             || (Byte::class.javaPrimitiveType == primitive && Byte::class.javaObjectType == proposed))
 }
 
-val fieldGet = Builtin("field-get") { env, rest ->
+val fieldGet = Builtin("field-get") { env, denv, rest ->
     assertLength(rest, 2)
     val first = rest[0]
     val target: Any = when (first) {
@@ -109,7 +109,7 @@ val fieldGet = Builtin("field-get") { env, rest ->
     marshall(property.get(target))
 }
 
-val fieldSet = Builtin("field-set") { env, rest ->
+val fieldSet = Builtin("field-set") { env, denv, rest ->
     assertLength(rest, 3)
     val first = rest[0]
     val target: Any = when (first) {
@@ -126,13 +126,13 @@ val fieldSet = Builtin("field-set") { env, rest ->
 }
 
 
-val javaInt = Builtin("int") { env, rest ->
+val javaInt = Builtin("int") { env, denv, rest ->
     assertLength(rest, 1)
     val num = assertType<net.raboof.kotlisp.Number>(rest.first())
     IObject(num.value.toInt())
 }
 
-val showMethods = Builtin("show-methods") { env, rest ->
+val showMethods = Builtin("show-methods") { env, denv, rest ->
     assertLength(rest, 1)
     val first = rest[0]
     val target: Any = when (first) {

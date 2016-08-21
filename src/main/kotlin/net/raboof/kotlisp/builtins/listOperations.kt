@@ -4,7 +4,7 @@ import net.raboof.kotlisp.*
 
 val expectSequence = { arg: Expr -> IllegalArgumentException("expected sequence but got ${arg.print()}") }
 
-val nth = Builtin("nth") { env, rest ->
+val nth = Builtin("nth") { env, denv, rest ->
     assertLength(rest, 2)
     val num = assertType<net.raboof.kotlisp.Number>(rest.first()).toInt()
     val arg = rest.component2()
@@ -18,7 +18,7 @@ val nth = Builtin("nth") { env, rest ->
     }
 }
 
-val rest = Builtin("rest") { env, rest ->
+val rest = Builtin("rest") { env, denv, rest ->
     assertLength(rest, 1)
     val arg = rest.first()
     when(arg) {
@@ -30,18 +30,18 @@ val rest = Builtin("rest") { env, rest ->
     }
 }
 
-val eval = Builtin("eval") { env, rest ->
+val eval = Builtin("eval") { env, denv, rest ->
     assertLength(rest, 1)
     val first = rest.first()
     when (first) {
-        is QExpression -> SExpression(first.exprs).evaluate(env)
-        else -> first.evaluate(env)
+        is QExpression -> SExpression(first.exprs).evaluate(env, denv)
+        else -> first.evaluate(env, denv)
     }
 }
 
-val list = Builtin("list") { env, rest -> QExpression(rest) }
+val list = Builtin("list") { env, denv, rest -> QExpression(rest) }
 
-val join = Builtin("join") { env, rest ->
+val join = Builtin("join") { env, denv, rest ->
     QExpression(rest.flatMap {
         when (it) {
             is QExpression -> it.exprs
@@ -50,13 +50,13 @@ val join = Builtin("join") { env, rest ->
     })
 }
 
-val cons = Builtin("cons") { env, rest ->
+val cons = Builtin("cons") { env, denv, rest ->
     assertLength(rest, 2)
     val second = assertType<QExpression>(rest.component2())
     QExpression(listOf(rest.first()) + second.exprs)
 }
 
-val len = Builtin("len") { env, rest ->
+val len = Builtin("len") { env, denv, rest ->
     assertLength(rest, 1)
     val arg = rest.first()
     when(arg) {
@@ -68,7 +68,7 @@ val len = Builtin("len") { env, rest ->
     }
 }
 
-val isNil = Builtin("nil?") { env, rest ->
+val isNil = Builtin("nil?") { env, denv, rest ->
     assertLength(rest, 1)
     when(rest.first()) {
         QExpression.Empty -> True
@@ -77,7 +77,7 @@ val isNil = Builtin("nil?") { env, rest ->
 
 }
 
-val isList = Builtin("list?") { env, rest ->
+val isList = Builtin("list?") { env, denv, rest ->
     assertLength(rest, 1)
     when(rest.first()) {
         is QExpression-> True

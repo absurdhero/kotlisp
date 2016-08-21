@@ -2,6 +2,8 @@
 
 ; syntactic sugar for defining a function
 (def {fun} (\ {args body} {def (list (nth 0 args)) (\ (rest args) body) }))
+; again for the dynamic environment
+(def {dynamic-fun} (\ {args body} {dynamic-def (list (nth 0 args)) (\ (rest args) body) }))
 
 (fun {unpack f xs} {eval (join (list f) xs)})
 (fun {pack f & xs} {f xs})

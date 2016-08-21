@@ -15,21 +15,21 @@ data class SExpression(val exprs: List<Expr>) : Expr {
         return print()
     }
 
-    override fun evaluate(environment: ChainedEnvironment): Expr {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Expr {
         if (exprs.size == 0) {
             return QExpression.Empty
         }
 
         // first evaluate items from left to right
-        val head = exprs.first().evaluate(environment)
-        val rest = exprs.subList(1, exprs.size).map { it.evaluate(environment) }
+        val head = exprs.first().evaluate(env, denv)
+        val rest = exprs.subList(1, exprs.size).map { it.evaluate(env, denv) }
 
         return when (head) {
             is Builtin -> {
-                head.invoke(environment, rest)
+                head.invoke(env, denv, rest)
             }
             is Lambda -> {
-                head.invoke(ChainedEnvironment(), rest)
+                head.invoke(denv, rest)
             }
             is Str, is Number, is Symbol, is True, is False, QExpression.Empty -> {
                 if (rest.size > 0) {

@@ -12,7 +12,7 @@ data class Number(val value: String) : Expr {
         return value
     }
 
-    override fun evaluate(environment: ChainedEnvironment): Number {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Number {
         return this
     }
 

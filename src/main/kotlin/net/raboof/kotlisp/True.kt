@@ -5,7 +5,7 @@ object True : Expr {
         return "#t"
     }
 
-    override fun evaluate(environment: ChainedEnvironment): True {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): True {
         return this
     }
 

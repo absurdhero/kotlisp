@@ -9,7 +9,7 @@ data class QExpression(val exprs: List<Expr>) : Expr {
         return "{${exprs.map { it.print() }.joinToString(" ")}}"
     }
 
-    override fun evaluate(environment: ChainedEnvironment): Expr {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Expr {
         return this
     }
 

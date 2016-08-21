@@ -2,7 +2,7 @@ package net.raboof.kotlisp.builtins
 
 import net.raboof.kotlisp.*
 
-val concat = Builtin("concat") { env, rest ->
+val concat = Builtin("concat") { env, denv, rest ->
     Str(rest.fold("") { last, it ->
         when (it) {
             is Str -> last + it.value
@@ -12,7 +12,7 @@ val concat = Builtin("concat") { env, rest ->
 }
 
 // unlike nil?, this applies to strings, sexprs, and qexprs
-val isEmpty = Builtin("empty?") { env, rest ->
+val isEmpty = Builtin("empty?") { env, denv, rest ->
     assertLength(rest, 1)
     when(rest.first()) {
         QExpression.Empty -> True
@@ -23,7 +23,7 @@ val isEmpty = Builtin("empty?") { env, rest ->
 
 }
 
-val symbol = Builtin("symbol") { env, rest ->
+val symbol = Builtin("symbol") { env, denv, rest ->
     assertLength(rest, 1)
     val first = assertType<Str>(rest.first())
     Symbol(first.value)

@@ -5,7 +5,7 @@ data class Symbol(val value: String) : Expr {
         return value
     }
 
-    override fun evaluate(environment: ChainedEnvironment): Expr {
-        return environment[value]
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Expr {
+        return env[value]
     }
 }

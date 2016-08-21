@@ -9,22 +9,22 @@ import java.io.*
 var out : Writer = PrintWriter(System.out)
 var input : BufferedReader = InputStreamReader(System.`in`).buffered()
 
-val load = Builtin("load") { env, rest ->
+val load = Builtin("load") { env, denv, rest ->
     assertLength(rest, 1)
     val path = assertType<Str>(rest.first()).value
-    LispParser().evaluate(env, FileInputStream(path).reader().readText()) ?: False
+    LispParser().evaluate(env, denv, FileInputStream(path).reader().readText()) ?: False
 }
 
-val readLine = Builtin("read-line") { env, rest ->
+val readLine = Builtin("read-line") { env, denv, rest ->
     Str(input.readLine())
 }
 
-val printString = Builtin("print-string") { env, rest ->
+val printString = Builtin("print-string") { env, denv, rest ->
     assertLength(rest, 1)
     Str(rest.first().print())
 }
 
-val print = Builtin("print") { env, rest ->
+val print = Builtin("print") { env, denv, rest ->
     assertLength(rest, 1)
     val arg = rest.first()
     when(arg) {
@@ -35,7 +35,7 @@ val print = Builtin("print") { env, rest ->
     QExpression.Empty
 }
 
-val error = Builtin("error") { env, rest ->
+val error = Builtin("error") { env, denv, rest ->
     assertLength(rest, 1)
     val msg = assertType<Str>(rest.first()).value
     out.write("error: $msg\n")

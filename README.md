@@ -103,6 +103,26 @@ More:
 
 `(list? {x}) => #t`
 
+#### Environments
+
+There is a lexical environment and a dynamic environment.
+
+When a function is invoked, its parameters are bound in a new environment
+and are only visible to code written in the function including
+any inner function definitions. This means that lexical environments
+have a hierarchy based on function definitions nested in the code.
+In addition to definining lexical symbols with function parameter names,
+the `=` function can be used to define a symbol in the current scope.
+
+`def` puts a symbol at the top of the lexical environment.
+This is called the "global" environment. All of the built-in functions
+exist there.
+
+I'm still figuring out how I want dynamic environments to work.
+For now, the dynamic environment can be accessed and modified using
+the `dynamic` and `dynamic-def` functions.
+
+`dynamic-fun` function is also defined for convenience.
 
 #### IO
 

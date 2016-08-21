@@ -4,7 +4,7 @@ import net.raboof.kotlisp.ChainedEnvironment
 import net.raboof.kotlisp.Expr
 
 data class IObject(val obj: Any?) : Expr {
-    override fun evaluate(environment: ChainedEnvironment): Expr {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Expr {
         return this
     }
 

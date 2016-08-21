@@ -13,13 +13,13 @@ class LispParser() : CharParsers<String>() {
         }
 
     /** evaluate the input or throw an exception */
-    fun evaluate(env: ChainedEnvironment, input: String): Expr? {
+    fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment, input: String): Expr? {
         var result: Result<String, Expr> = statementOrNil(input)
-        var lastValue : Expr? = result.valueOrFail().evaluate(env)
+        var lastValue : Expr? = result.valueOrFail().evaluate(env, denv)
 
         while (result !is Result.ParseError && (result as Result.Value).rest.isNotEmpty()) {
             result = statementOrNil(result.rest)
-            lastValue = result.valueOrFail().evaluate(env)
+            lastValue = result.valueOrFail().evaluate(env, denv)
         }
 
         return lastValue

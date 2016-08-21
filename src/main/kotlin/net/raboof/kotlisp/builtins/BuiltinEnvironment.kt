@@ -11,6 +11,9 @@ class BuiltinEnvironment : ChainedEnvironment() {
         register(env)
         register(lambda)
         register(eval)
+        register(dynamicDef)
+        register(dynamic)
+        register(dynamicEnv)
 
         // lists
         register(nth)

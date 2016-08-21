@@ -9,19 +9,19 @@ val multiply = mathBuiltin("*", { it.fold (1L, { acc, next -> acc * next }) })
 val divide = mathBuiltin("/", { it.reduce { acc, next -> acc / next } })
 val modulo = mathBuiltin("%", { it.reduce { acc, next -> acc % next }})
 
-val gt = Builtin(">") { env, rest -> comparison(rest, { a, b -> a > b}) }
-val lt = Builtin("<") { env, rest -> comparison(rest, { a, b -> a < b}) }
-val gte = Builtin(">=") { env, rest -> comparison(rest, { a, b -> a >= b}) }
-val lte = Builtin("<=") { env, rest -> comparison(rest, { a, b -> a <= b}) }
+val gt = Builtin(">") { env, denv, rest -> comparison(rest, { a, b -> a > b}) }
+val lt = Builtin("<") { env, denv, rest -> comparison(rest, { a, b -> a < b}) }
+val gte = Builtin(">=") { env, denv, rest -> comparison(rest, { a, b -> a >= b}) }
+val lte = Builtin("<=") { env, denv, rest -> comparison(rest, { a, b -> a <= b}) }
 
 fun mathBuiltin(opName: String, f: (List<Long>) -> Long): Builtin {
-    return Builtin(opName, { env, rest -> Number(f(numberTerms(env, opName, rest)).toString()) })
+    return Builtin(opName, { env, denv, rest -> Number(f(numberTerms(env, denv, opName, rest)).toString()) })
 }
 
-private fun numberTerms(env: ChainedEnvironment, head: String, rest: List<Expr>): List<Long> {
+private fun numberTerms(env: ChainedEnvironment, denv: ChainedEnvironment, head: String, rest: List<Expr>): List<Long> {
     return rest.map {
         when (it) {
-            is Number -> it.evaluate(env).value.toLong()
+            is Number -> it.evaluate(env, denv).value.toLong()
             else -> throw IllegalArgumentException("cannot evaluate argument ${it.print()} of $head")
         }
     }

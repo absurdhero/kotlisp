@@ -45,16 +45,12 @@ class Lambda : Expr {
         return "(\\ $args $body)"
     }
 
-    override fun evaluate(environment: ChainedEnvironment): Expr {
+    override fun evaluate(env: ChainedEnvironment, denv: ChainedEnvironment): Expr {
         return this
     }
 
-    /* lambda supports taking in a call-time environment
-     * but we only pass in an empty one in for now
-     * which is used to store local bindings.
-     */
     operator fun invoke(callEnv: ChainedEnvironment, givenArgs: List<Expr>): Expr {
-        val env = callEnv.childOf(enclosingEnv)
+        val env = ChainedEnvironment(enclosingEnv)
 
         for ((arg, value) in args zip givenArgs) {
             env[arg] = value
@@ -75,6 +71,6 @@ class Lambda : Expr {
                 env[vararg] = QExpression(givenArgs.subList(formalArgs.size, givenArgs.size))
         }
 
-        return body.evaluate(env)
+        return body.evaluate(env, callEnv)
     }
 }

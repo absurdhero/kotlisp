@@ -22,11 +22,15 @@ fun main(args: Array<String>) {
 
     val parser = LispParser()
 
-    val env = CoreEnvironment()
+    val env = CoreEnvironment() // lexical environment containing built-ins
+    val denv = ChainedEnvironment() // dynamic environment
+
+    // load preamble
+    LispParser().evaluate(env, denv, env.javaClass.getResourceAsStream("/preamble.lisp").reader().readText())
 
     if (args.size > 0) {
         System.out.println("loading file: " + File(args[0]).canonicalPath)
-        load.invoke(env, listOf(Str(args[0])))
+        load.invoke(env, denv, listOf(Str(args[0])))
         System.exit(0)
     }
 
@@ -38,7 +42,7 @@ fun main(args: Array<String>) {
         }
 
         try {
-            val result = parser.evaluate(env, line)
+            val result = parser.evaluate(env, denv, line)
             if (result != null && result != QExpression.Empty)
                 out.println(result.print())
             else if (result == null)
