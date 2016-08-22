@@ -58,7 +58,9 @@ or by using macros.
 #### q-expressions
 
 q-expressions allow for some interesting features without implementing
-a quasi-quote or macro system.
+a quasi-quote or macro system. It isn't as powerful but it is
+conceptually simple and avoids the need to implement an `expand` phase
+in the evaluator.
 
 Instead of writing out an argument list, we could instead
 assemble our argument list {arg1 arg2} with code.
@@ -93,7 +95,11 @@ A list of some of the core list manipulation functions and their results:
 
 `(join {a} {b c}) => {a b c}`
 
-Convert a q-expression to an s-expression (e.g. unquote):
+`(last {a b c}) => c`
+
+`(nth 1 {a b c}) => b`
+
+Convert a q-expression to an s-expression (i.e. unquote):
 
 `(eval {a b c}) => (a b c)`
 
@@ -102,6 +108,20 @@ More:
 `(nil? {}) => #t`
 
 `(list? {x}) => #t`
+
+#### Logic
+
+As in scheme, true is `#t` and false is `#f`.
+
+`(if {cond} {q-expr} {q-expr})` - if condition with an optional else branch
+
+`(and expr*)` - and condition which short-circuits on the first false expression
+
+`(or expr*)` - or condition which short-circuits on the first true expression
+
+`(eq arg1 arg2)` - check equality. Expressions are unfolded and equality is checked for each element
+
+`(boolean? expr*)` - returns `#t` if all given expressions are booleans
 
 #### Environments
 
@@ -139,7 +159,7 @@ the `dynamic` and `dynamic-def` functions.
 Java interoperability is achieved with a few functions and some clever marshalling.
 
 - `(ctor className params...)`: Constructs an object with any number of parameters
-- `(. methodName params...)`: invokes a method on an object
+- `(. object methodName params...)`: invokes a method on an object
 - `(field-get object propertyName)`: get an object field's value
 - `(field-set object propertyName value)`: set an object field's value
 - `(int number)`: coerce a long to a java int. This may go away with better marshalling.
