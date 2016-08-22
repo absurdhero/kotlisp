@@ -29,7 +29,7 @@ fun main(args: Array<String>) {
     LispParser().evaluate(env, denv, env.javaClass.getResourceAsStream("/preamble.lisp").reader().readText())
 
     if (args.size > 0) {
-        System.out.println("loading file: " + File(args[0]).canonicalPath)
+        System.err.println("loading file: " + File(args[0]).canonicalPath)
         load.invoke(env, denv, listOf(Str(args[0])))
         System.exit(0)
     }
