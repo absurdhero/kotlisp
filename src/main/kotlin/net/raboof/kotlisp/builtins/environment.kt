@@ -33,7 +33,7 @@ private fun put(env: ChainedEnvironment, rest: List<Expr>, symbols: QExpression)
 
 val lambda = Builtin("\\") { env, denv, rest ->
     val args = rest.component1() as QExpression
-    Lambda(args, rest.component2(), env)
+    Lambda(args, rest.drop(1), env)
 }
 
 val env = Builtin("env") { env, denv, rest ->

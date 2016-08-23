@@ -41,15 +41,13 @@ val eq = Builtin("eq") { env, denv, rest ->
 
 fun assertBoolean(exprs: List<Expr>) {
     for(expr in exprs) {
-        if (expr != True && expr != False)
+        if (!isBool(expr))
             throw IllegalArgumentException("expected boolean value but got $expr")
     }
 }
 
 fun isBool(expr: Expr) : Boolean {
-    if (expr == True || expr == False)
-        return true
-    return false
+    return expr == True || expr == False
 }
 
 val and = Builtin("and") { env, denv, rest ->

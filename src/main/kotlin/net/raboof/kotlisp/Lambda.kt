@@ -4,22 +4,25 @@ class Lambda : Expr {
     val args: List<String>
     val formalArgs: List<String>
     val vararg: String?
-    val body: SExpression
+    val body: List<SExpression>
     val enclosingEnv: Environment
 
-    constructor(arguments: QExpression, rest: Expr, enclosingEnv: Environment) : this(
+    constructor(arguments: QExpression, rest: List<Expr>, enclosingEnv: Environment) : this(
             arguments.exprs.map {
                 when (it) {
                     is Symbol -> it.value
                     else -> throw IllegalArgumentException("cannot create function with argument $it")
                 }
             },
-            when (rest) {
-                is QExpression -> SExpression(rest.exprs)
-                else -> throw IllegalArgumentException("function body must be a q-expression")
-            }, enclosingEnv)
+            rest.map {
+                when (it) {
+                    is QExpression -> SExpression(it.exprs)
+                    else -> throw IllegalArgumentException("function body must be a q-expression")
+                }
+            }
+            , enclosingEnv)
 
-    constructor(args: List<String>, body: SExpression, enclosingEnv: Environment) {
+    constructor(args: List<String>, body: List<SExpression>, enclosingEnv: Environment) {
         this.args = args
         this.body = body
         this.enclosingEnv = enclosingEnv
@@ -71,6 +74,8 @@ class Lambda : Expr {
                 env[vararg] = QExpression(givenArgs.subList(formalArgs.size, givenArgs.size))
         }
 
-        return body.evaluate(env, callEnv)
+        var retval : Expr = QExpression.Empty
+        body.forEach { retval = it.evaluate(env, callEnv) }
+        return retval
     }
 }
